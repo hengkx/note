@@ -1,0 +1,25 @@
+{
+  "name": "note",
+  "version": "1.0.0",
+  "description": "云笔记",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hengkx/note.git"
+  },
+  "keywords": [
+    "note"
+  ],
+  "author": {
+    "name": "Tom Xu",
+    "email": "ycxzhkx@gmail.com",
+    "url": "https://github.com/hengkx"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hengkx/note/issues"
+  },
+  "homepage": "https://github.com/hengkx/note#readme"
+}
