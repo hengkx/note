@@ -1,7 +1,7 @@
 # 云笔记
 
 ## 结构
-- `packages/api` [接口端](https://github.com/hengkx/note/packages/api)
+- `packages/api` [接口端](https://github.com/hengkx/note/tree/master/packages/api)
 - `packages/web` 网页端
 - `packages/app` 移动客户端
 - `packages/pc` PC客户端
