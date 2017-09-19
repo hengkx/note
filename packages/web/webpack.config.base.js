@@ -71,7 +71,7 @@ export default {
     new HtmlPlugin({
       inject: true,
       template: './src/index.ejs',
-      title: 'Api Doc',
+      title: '云笔记',
       minify: {
         collapseBooleanAttributes: true,
         collapseInlineTagWhitespace: true,

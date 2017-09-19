@@ -19,8 +19,12 @@ function CommonPlugin(Schema) {
   });
 
   Schema.pre('validate', function (next) { // eslint-disable-line func-names
-    this.created_at = Math.round(Date.parse(this._id.getTimestamp()) / 1000);
-    this.updated_at = Math.round(Date.now() / 1000);
+    if (this.created_at) {
+      this.updated_at = Math.round(Date.now() / 1000);
+    } else {
+      this.created_at = Math.round(Date.parse(this._id.getTimestamp()) / 1000);
+      this.updated_at = this.created_at;
+    }
     this.id = this._id.toString();
     next();
   });

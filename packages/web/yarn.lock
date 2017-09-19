@@ -5975,6 +5975,13 @@ rc@^1.1.2, rc@^1.1.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-contextmenu@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-contextmenu/-/react-contextmenu-2.7.0.tgz#9eb0a54de0bc03a4dd8a3ead49851af502ad6ba5"
+  dependencies:
+    classnames "^2.2.5"
+    object-assign "^4.1.0"
+
 react-deep-force-update@^2.0.1:
   version "2.1.1"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-2.1.1.tgz#8ea4263cd6455a050b37445b3f08fd839d86e909"

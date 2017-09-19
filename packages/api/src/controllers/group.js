@@ -2,7 +2,7 @@ import validator from 'validator';
 import randomize from 'randomatic';
 import nodemailer from 'nodemailer';
 import ApiError from '../errors/ApiError';
-import { User, UserActive } from '../models';
+import { User, UserActive, Group } from '../models';
 
 export async function signup(ctx) {
   const { ip, body } = ctx.request;
@@ -49,24 +49,34 @@ export async function signup(ctx) {
   ctx.body = res;
 }
 
-export async function active(ctx) {
-  const { email, token } = ctx.query;
-  const count = await UserActive.count({ email, token, is_used: false });
-  if (count === 0) throw new ApiError('ACTIVE_INFO_INVALID');
-  await UserActive.findOneAndUpdate({ email, token, is_used: false }, { is_used: true });
-  const res = await User.findOneAndUpdate({ email }, {
-    is_actived: true
-  }, { new: true });
-  ctx.body = res;
+export async function getList(ctx) {
+  const { id } = ctx.session;
+  let groups = await Group.find({ user: id });
+  if (groups.length === 0) {
+    await Group.create({ name: '我的分组', user: id });
+    groups = await Group.find({ user: id });
+  }
+  ctx.body = groups;
 }
 
 
-export async function signin(ctx) {
+export async function add(ctx) {
+  const { id } = ctx.session;
   const { body } = ctx.request;
-  const { email, password } = body;
-  const user = await User.findOne({ email, password });
-  if (!user) throw new ApiError('USERNAME_OR_PASSWORD_ERROR');
-  ctx.session.id = user.id;
-  ctx.session.user = user.user;
-  ctx.body = user;
+  const { name, parent } = body;
+  const parentGroup = await Group.findById(parent);
+  const parents = [...parentGroup.parents, parent]
+  const group = await Group.create({ user: id, name, parent, parents });
+
+  ctx.body = group;
+}
+
+export async function del(ctx) {
+  const { id } = ctx.params;
+
+  const res = await Group.remove({
+    $or: [{ id }, { parents: id }],
+    $and: [{ user: ctx.session.id }]
+  });
+  if (res.result.n === 0) throw new ApiError('GROUP_NOT_EXISTS');
 }
