@@ -24,6 +24,7 @@ module.exports = {
     "react/sort-comp": ["error", {
       "order": ["type-annotations", "static-methods", "lifecycle", "everything-else", "render"]
     }],
+    "jsx-a11y/no-noninteractive-element-interactions": "off",
     "jsx-a11y/href-no-hash": "off",
     "react/jsx-no-bind": "off",
     "react/require-default-props": "off",

@@ -1,6 +1,7 @@
 import Router from 'koa-router';
 import account from './account';
 import group from './group';
+import note from './note';
 
 const router = new Router({
   prefix: '/api'
@@ -8,6 +9,7 @@ const router = new Router({
 
 router.use(account.routes());
 router.use(group.routes());
+router.use(note.routes());
 
 router.all('*', async (ctx) => {
   ctx.body = 404;

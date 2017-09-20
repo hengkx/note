@@ -1,7 +1,7 @@
 /* eslint global-require: 0, no-underscore-dangle: 0 */
 import { createStore, applyMiddleware, compose } from 'redux';
 import createSagaMiddleware from 'redux-saga';
-import createHistory from 'history/createBrowserHistory'
+import createHistory from 'history/createBrowserHistory';
 import { routerMiddleware } from 'react-router-redux';
 import { nprogressMiddleware } from 'redux-nprogress';
 import rootSaga from '../redux/sagas';
@@ -26,22 +26,23 @@ export default (initialState = {}) => {
       )
     ),
   );
-  let sagaTask = sagaMiddleware.run(rootSaga);
+  sagaMiddleware.run(rootSaga);
+  // let sagaTask = sagaMiddleware.run(rootSaga);
 
-  if (module.hot) {
-    module.hot.accept('../redux/reducers', () => {
-      store.replaceReducer(require('../redux/reducers'));
-    });
-    module.hot.accept('../redux/sagas', () => {
-      const rootNewSagas = require('../redux/sagas');
-      sagaTask.cancel();
-      sagaTask.done
-        .then(() => (sagaTask = sagaMiddleware.run(rootNewSagas)))
-        .catch((error) => {
-          console.log(error);
-        });
-    });
-  }
+  // if (module.hot) {
+  //   module.hot.accept('../redux/reducers', () => {
+  //     store.replaceReducer(require('../redux/reducers'));
+  //   });
+  //   module.hot.accept('../redux/sagas', () => {
+  //     const rootNewSagas = require('../redux/sagas');
+  //     sagaTask.cancel();
+  //     sagaTask.done
+  //       .then(() => (sagaTask = sagaMiddleware.run(rootNewSagas)))
+  //       .catch((error) => {
+  //         console.log(error);
+  //       });
+  //   });
+  // }
 
   return store;
 };

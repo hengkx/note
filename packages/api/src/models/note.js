@@ -5,7 +5,7 @@ const Schema = mongoose.Schema;
 
 const Notes = new Schema({
   title: { type: String, required: true },
-  content: { type: String, required: true },
+  content: String,
   sort: { type: Number, default: 99, required: true },
   group: { type: Schema.Types.ObjectId, required: true, ref: 'Group' },
   tags: [{ type: Schema.Types.ObjectId, ref: 'Tag' }],
