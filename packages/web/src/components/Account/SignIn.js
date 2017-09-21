@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, Input, message, Button } from 'antd';
 import { Link } from 'react-router-dom';
 // import { rsa } from '../../utils';
+import './less/account.less';
 
 const FormItem = Form.Item;
 
@@ -72,10 +73,10 @@ class SignIn extends React.Component {
       },
     };
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form className="account" onSubmit={this.handleSubmit}>
+        <h1>云笔记</h1>
         <FormItem
           {...formItemLayout}
-          label="邮箱"
           hasFeedback
         >
           {getFieldDecorator('email', {
@@ -83,18 +84,17 @@ class SignIn extends React.Component {
               { type: 'email', message: '请输入正确的邮箱!' },
               { required: true, message: '请输入邮箱!' }
             ]
-          })(<Input />)}
+          })(<Input placeholder="邮箱" />)}
         </FormItem>
         <FormItem
           {...formItemLayout}
-          label="密码"
           hasFeedback
         >
           {getFieldDecorator('password', {
             rules: [
               { required: true, message: '请输入密码!' }
             ]
-          })(<Input type="password" />)}
+          })(<Input placeholder="密码" type="password" />)}
         </FormItem>
         <FormItem {...tailFormItemLayout}>
           <Button type="primary" htmlType="submit" size="large">登录</Button>

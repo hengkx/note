@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Form, Input, Checkbox, Button, message } from 'antd';
 import { Link } from 'react-router-dom';
 // import { rsa } from '../../utils';
+import './less/account.less';
 
 const FormItem = Form.Item;
 
@@ -116,7 +117,8 @@ class SignUp extends React.Component {
       },
     };
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form className="account" onSubmit={this.handleSubmit}>
+        <h1>云笔记</h1>
         <FormItem
           {...formItemLayout}
           label="邮箱"
