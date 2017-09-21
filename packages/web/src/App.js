@@ -13,6 +13,8 @@ const history = createHistory();
 
 const store = configureStore();
 
+export { history };
+
 export default class extends Component {
   render() {
     return (

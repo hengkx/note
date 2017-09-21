@@ -1,18 +1,17 @@
 import { connect } from 'react-redux';
 import Main from '../components/Main';
-import { getList as getGroupList, add as addGroup, del as delGroup } from '../redux/group';
-import { getList as getNoteList, add as addNote, del as delNote } from '../redux/note';
+import { getList as getNoteList, add as addNote, del as delNote, update as updateNote } from '../redux/note';
+import { getList as getTagList } from '../redux/tag';
 
 const mapStateToProps = (state) => ({
-  getGroupListResult: state.group.getListResult,
-  addGroupResult: state.group.addResult,
-  delGroupResult: state.group.delResult,
   getNoteListResult: state.note.getListResult,
   addNoteResult: state.note.addResult,
   delNoteResult: state.note.delResult,
+  updateNoteResult: state.note.updateResult,
+  getTagListResult: state.tag.getListResult,
 });
 
 export default connect(
   mapStateToProps,
-  { getGroupList, addGroup, delGroup, getNoteList, addNote, delNote }
+  { getNoteList, addNote, delNote, updateNote, getTagList }
 )(Main);

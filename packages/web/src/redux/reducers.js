@@ -4,11 +4,13 @@ import { nprogress } from 'redux-nprogress';
 import account from './account';
 import group from './group';
 import note from './note';
+import tag from './tag';
 
 export default combineReducers({
   account,
   group,
   note,
+  tag,
   nprogress,
   router: routerReducer,
 });

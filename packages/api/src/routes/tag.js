@@ -1,8 +1,8 @@
 import Router from 'koa-router';
-import { getList, getById, add, del, update } from '../controllers/note';
+import { getList, getById, add, del, update } from '../controllers/tag';
 
 const router = new Router({
-  prefix: '/note'
+  prefix: '/tag'
 });
 
 router

@@ -3,14 +3,8 @@ import { Group, Note, Tag } from '../models';
 
 export async function getList(ctx) {
   const { id } = ctx.session;
-  const { group } = ctx.query;
-  const notes = await Note.find({ user: id, group }).populate('tags');
-  // for (let i = 0; i < notes.length; i += 1) {
-  //   const tags = notes[i].tags.map(tag => (tag.name));
-  //   notes[i].tags = tags;// eslint-disable-line no-param-reassign
-  //   console.log(notes[i].tags, tags);
-  // }
-  ctx.body = notes;
+  const tags = await Tag.find({ user: id });
+  ctx.body = tags;
 }
 
 export async function getById(ctx) {

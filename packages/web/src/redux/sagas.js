@@ -4,6 +4,7 @@ import { all } from 'redux-saga/effects';
 import { watchSagas as accountSagas } from './account';
 import { watchSagas as groupSagas } from './group';
 import { watchSagas as noteSagas } from './note';
+import { watchSagas as tagSagas } from './tag';
 
 ReduxReqs.defaults = {
   beforeAction: beginTask(),
@@ -14,6 +15,7 @@ export default function* rootSaga() {
   yield all([
     ...accountSagas,
     ...groupSagas,
-    ...noteSagas
+    ...noteSagas,
+    ...tagSagas
   ]);
 }

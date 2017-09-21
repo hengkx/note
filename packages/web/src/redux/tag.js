@@ -1,8 +1,8 @@
 import ReduxReqs from 'redux-reqs';
 
 const reduxReqs = new ReduxReqs({
-  prefix: 'NOTE',
-  prefixUrl: '/api/note'
+  prefix: 'TAG',
+  prefixUrl: '/api/tag'
 });
 
 reduxReqs

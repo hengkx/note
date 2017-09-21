@@ -1,77 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { message, Modal, Input, Tree, Icon } from 'antd';
-import { NProgress } from 'redux-nprogress';
-import { ContextMenuTrigger } from 'react-contextmenu';
-import GroupMenu from './GroupMenu';
-import { toTree } from '../../utils';
+import { Select, Button, message, Input, Icon, Tag } from 'antd';
+import Markdown from '../Markdown';
+import Group from '../../containers/Group';
 import './less/main.less';
 
-const TreeNode = Tree.TreeNode;
+const { Option } = Select;
+const { TextArea } = Input;
 
 class Main extends React.Component {
   static propTypes = {
-    getGroupList: PropTypes.func.isRequired,
-    addGroup: PropTypes.func.isRequired,
-    delGroup: PropTypes.func.isRequired,
-    addNote: PropTypes.func.isRequired,
+    getTagList: PropTypes.func.isRequired,
+    delNote: PropTypes.func.isRequired,
+    updateNote: PropTypes.func.isRequired,
     getNoteList: PropTypes.func.isRequired,
-    getGroupListResult: PropTypes.object,
-    addGroupResult: PropTypes.object,
-    delGroupResult: PropTypes.object,
     getNoteListResult: PropTypes.object,
+    delNoteResult: PropTypes.object,
+    addNoteResult: PropTypes.object,
+    getTagListResult: PropTypes.object,
   };
   constructor(props) {
     super(props);
     this.state = {
       groups: [],
       notes: [],
+      tags: [],
       groupTree: [],
       groupName: '新建分组'
     };
   }
-
   componentDidMount() {
-    this.props.getGroupList();
+    this.props.getTagList();
   }
+
   componentWillReceiveProps(nextProps) {
     const {
-      getGroupListResult, addGroupResult, delGroupResult,
-      getNoteListResult, delNoteResult, addNoteResult
+      getNoteListResult, delNoteResult, addNoteResult, getTagListResult
     } = nextProps;
-    if (this.props.getGroupListResult !== getGroupListResult) {
-      if (getGroupListResult.code === 0) {
-        const groupTree = toTree(getGroupListResult.data);
-        const groupExpandedKeys = this.state.groupExpandedKeys ? this.state.groupExpandedKeys : [groupTree[0].id];
-        const groupSelectedKeys = this.state.groupSelectedKeys ? this.state.groupSelectedKeys : [groupTree[0].id];
-        this.setState({ groups: getGroupListResult.data, groupTree, groupSelectedKeys, groupExpandedKeys });
-        this.props.getNoteList({ group: groupSelectedKeys[0] });
-      } else {
-        message.error(getGroupListResult.message);
-      }
-    }
-    if (this.props.addGroupResult !== addGroupResult) {
-      if (addGroupResult.code === 0) {
-        this.props.getGroupList();
-        const groupExpandedKeys = [addGroupResult.data.parent];
-        const groupSelectedKeys = [addGroupResult.data.id];
-        this.setState({ groupName: '新建分组', groupExpandedKeys, groupSelectedKeys });
-      } else {
-        message.error(addGroupResult.message);
-      }
-    }
-    if (this.props.delGroupResult !== delGroupResult) {
-      if (delGroupResult.code === 0) {
-        this.props.getGroupList();
-        message.success('删除成功！');
-      } else {
-        message.error(delGroupResult.message);
-      }
-    }
+
     if (this.props.getNoteListResult !== getNoteListResult) {
       if (getNoteListResult.code === 0) {
-        this.setState({ notes: getNoteListResult.data });
+        const notes = getNoteListResult.data;
+        notes.forEach(note => {
+          note.sourceTags = note.tags;// eslint-disable-line no-param-reassign
+          note.tags = note.tags.map(tag => (tag.name));// eslint-disable-line no-param-reassign
+        });
+        this.setState({ notes });
       } else {
         message.error(getNoteListResult.message);
       }
@@ -86,64 +60,51 @@ class Main extends React.Component {
     }
     if (this.props.addNoteResult !== addNoteResult) {
       if (addNoteResult.code === 0) {
-        const { groupSelectedKeys } = this.state;
-        this.props.getNoteList({ group: groupSelectedKeys[0] });
+        message.success('新建笔记成功！');
+        const { data } = addNoteResult;
+        this.props.getNoteList({ group: data.group });
       } else {
         message.error(addNoteResult.message);
       }
     }
-
-  }
-  handleMenuClick = (e, data) => {
-    if (data.action === 'add_group') {
-      this.setState({ visible: true, currentGroup: data.group });
-    } else if (data.action === 'del_group') {
-      this.props.delGroup({ id: data.group.id });
-    } else if (data.action === 'add_note') {
-      this.props.addNote({ group: data.group.id, title: '无标题笔记', content: '' });
+    if (this.props.getTagListResult !== getTagListResult) {
+      if (getTagListResult.code === 0) {
+        const { data } = getTagListResult;
+        this.setState({ tags: data });
+      } else {
+        message.error(getTagListResult.message);
+      }
     }
   }
-  handleOkClick = () => {
-    const { currentGroup, groupName } = this.state;
-    this.props.addGroup({ name: groupName, parent: currentGroup.id });
-    this.setState({ visible: false });
-  }
-  handleExpand = (expandedKeys) => {
-    this.setState({ groupExpandedKeys: expandedKeys });
-  }
-  handleSelect = (selectedKeys) => {
-    this.props.getNoteList({ group: selectedKeys[0] });
-    this.setState({ groupSelectedKeys: selectedKeys });
-  }
+
   handleSelectedNoteClick = (note) => {
-    console.log(note);
+    this.setState({ selectedNote: note, isEdit: false });
   }
   handleDelNoteClick = (note) => {
     this.props.delNote({ id: note.id });
   }
+  handleSaveNoteClick = () => {
+    const { selectedNote } = this.state;
+    this.props.updateNote(selectedNote);
+  }
+  handleTitleChange = (e) => {
+    const { selectedNote } = this.state;
+    selectedNote.title = e.target.value;
+    this.setState({ selectedNote });
+  }
+  handleContentChange = (e) => {
+    const { selectedNote } = this.state;
+    selectedNote.content = e.target.value;
+    this.setState({ selectedNote });
+  }
+  handleTagChange = (val) => {
+    const { selectedNote } = this.state;
+    selectedNote.tags = val;
+    this.setState({ selectedNote });
+  }
   render() {
-    const { visible, notes, groupName, groupTree, groupExpandedKeys, groupSelectedKeys } = this.state;
-    const groupItem = (group) => (
-      <ContextMenuTrigger
-        id="GROUP_MENU"
-        onItemClick={this.handleMenuClick}
-        group={group}
-        collect={(props) => (props)}
-      >
-        {group.name}
-      </ContextMenuTrigger>
-    );
+    const { notes, isEdit, tags, selectedNote } = this.state;
 
-    const renderGroupTreeNode = data => data.map((item) => {
-      if (item.children && item.children.length) {
-        return (
-          <TreeNode
-            key={item.id}
-            title={groupItem(item)}
-          >{renderGroupTreeNode(item.children)}</TreeNode>);
-      }
-      return (<TreeNode key={item.id} title={groupItem(item)} />);
-    });
     return (
       <div className="main">
         <div className="header">
@@ -151,16 +112,7 @@ class Main extends React.Component {
         </div>
         <div className="container">
           <div className="sidebar">
-            <Tree
-              className="group-tree"
-              onSelect={this.handleSelect}
-              selectedKeys={groupSelectedKeys}
-              onExpand={this.handleExpand}
-              expandedKeys={groupExpandedKeys}
-            >
-              {renderGroupTreeNode(groupTree)}
-            </Tree>
-            <GroupMenu />
+            <Group />
           </div>
           <div className="content">
             <div className="list">
@@ -168,6 +120,7 @@ class Main extends React.Component {
                 {notes.map(item => (
                   <li
                     key={item.id}
+                    className={selectedNote === item ? 'active' : ''}
                     onClick={() => { this.handleSelectedNoteClick(item); }}
                   >
                     <div className="note-item">
@@ -182,17 +135,52 @@ class Main extends React.Component {
                 ))}
               </ul>
             </div>
-            <div className="detail"></div>
+            {selectedNote && isEdit &&
+              <div className="detail">
+                <div className="detail-header">
+                  <div className="title">
+                    <Input value={selectedNote.title} onChange={this.handleTitleChange} />
+                  </div>
+                  <div className="action">
+                    <Button onClick={this.handleSaveNoteClick}>保存</Button>
+                  </div>
+                </div>
+                <Select
+                  mode="tags"
+                  style={{ width: '100%' }}
+                  placeholder="标签"
+                  value={selectedNote.tags}
+                  onChange={this.handleTagChange}
+                >
+                  {tags.map(tag => <Option key={tag.id} value={tag.name}>{tag.name}</Option>)}
+                </Select>
+                <div className="content">
+                  {isEdit ?
+                    <TextArea value={selectedNote.content} onChange={this.handleContentChange} /> :
+                    <Markdown content={selectedNote.content} />
+                  }
+                </div>
+              </div>
+            }
+            {selectedNote && !isEdit &&
+              <div className="detail">
+                <div className="detail-header">
+                  <div className="title">
+                    {selectedNote.title}
+                  </div>
+                  <div className="tag">
+                    {selectedNote.sourceTags.map(tag => (<Tag key={tag.id}>{tag.name}</Tag>))}
+                  </div>
+                  <div className="action">
+                    <Button onClick={() => { this.setState({ isEdit: true }); }}>编辑</Button>
+                  </div>
+                </div>
+                <Markdown content={selectedNote.content} />
+              </div>
+            }
           </div>
         </div>
-        <Modal
-          title="新建分组"
-          visible={visible}
-          onOk={this.handleOkClick}
-          onCancel={() => { this.setState({ visible: false }); }}
-        >
-          <Input value={groupName} onChange={(e) => { this.setState({ groupName: e.target.value }); }} />
-        </Modal>
+
       </div>
     );
   }
