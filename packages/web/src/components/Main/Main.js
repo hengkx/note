@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Select, Button, message, Input, Icon, Tag } from 'antd';
+import moment from 'moment';
 import Markdown from '../Markdown';
 import Group from '../../containers/Group';
 import './less/main.less';
@@ -125,7 +126,7 @@ class Main extends React.Component {
                   >
                     <div className="note-item">
                       <div className="detail">
-                        {item.title}
+                        {item.title}{moment.unix(item.created_at).format('YYYY-MM-DD HH:mm:ss')}
                       </div>
                       <div className="action">
                         <Icon type="delete" onClick={() => { this.handleDelNoteClick(item); }} />
