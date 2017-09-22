@@ -7,11 +7,13 @@ const reduxReqs = new ReduxReqs({
 
 reduxReqs
   .get('GET_LIST')
+  .get('GET_SHARE_CONTENT', '/share')
   .post('ADD')
+  .post('SHARE', '/share')
   .del('DEL', '/:id')
   .put('UPDATE', '/:id');
 
-export const { update, del, add, getList }
+export const { update, del, add, getList, share, getShareContent }
   = reduxReqs.getCreateActions();
 
 export default reduxReqs.getReducers();

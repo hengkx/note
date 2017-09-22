@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { getList, getById, add, del, update } from '../controllers/note';
+import { getList, getById, share, getShareContent, add, del, update } from '../controllers/note';
 
 const router = new Router({
   prefix: '/note'
@@ -7,8 +7,10 @@ const router = new Router({
 
 router
   .get('/', getList)
+  .get('/share', getShareContent)
   .get('/:id', getById)
   .post('/', add)
+  .post('/share', share)
   .del('/:id', del)
   .put('/:id', update);
 

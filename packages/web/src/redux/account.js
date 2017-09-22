@@ -8,12 +8,13 @@ const reduxReqs = new ReduxReqs({
 
 reduxReqs
   .get('GET_LIST')
-  .get('CHECK_USERNAME_EXIST', Api.CheckUsernameExist)
+  .post('SEND_ACTIVE_EMAIL', '/active')
   .post('SIGN_IN', '/signin')
+  .post('FORGOT', '/forgot')
   .post('SIGN_UP', '/signup')
   .post('ADD');
 
-export const { checkUsernameExist, signIn, signUp, add, getList }
+export const { sendActiveEmail, signIn, signUp, forgot, add, getList }
   = reduxReqs.getCreateActions();
 
 export default reduxReqs.getReducers();

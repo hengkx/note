@@ -58,3 +58,26 @@ export async function update(ctx) {
 
   ctx.body = res;
 }
+
+export async function share(ctx) {
+  const user = ctx.session.id;
+  const { body } = ctx.request;
+  const { id, share_password, is_shared } = body;
+  const note = await Note.findOne({ id, user });
+  if (!note) throw new ApiError('NOTE_NOT_EXISTS');
+
+  const res = await Note.findOneAndUpdate({ id, user }, {
+    is_shared, share_password
+  }, { new: true });
+
+  ctx.body = res;
+}
+
+export async function getShareContent(ctx) {
+  const { id, type } = ctx.request.query;
+  if (type === 'note') {
+    const note = await Note.findOne({ id, is_shared: true }).populate('tags');
+    if (!note) throw new ApiError('NOTE_NOT_EXISTS');
+    ctx.body = note;
+  }
+}

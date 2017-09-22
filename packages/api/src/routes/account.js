@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { signup, active, signin } from '../controllers/account';
+import { signup, active, sendActiveEmail, signin, forgot } from '../controllers/account';
 
 const router = new Router({
   prefix: '/account'
@@ -7,12 +7,9 @@ const router = new Router({
 
 router
   .get('/active', active)
+  .post('/active', sendActiveEmail)
   .post('/signup', signup)
   .post('/signin', signin)
-
-// .get('/download', async (ctx) => {
-//   const res = await download(ctx.query);
-//   ctx.body = res;
-// });
+  .post('/forgot', forgot)
 
 export default router;

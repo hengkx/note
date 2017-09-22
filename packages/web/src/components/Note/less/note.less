@@ -1,0 +1,99 @@
+.note {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .content {
+        flex: 1;
+        height: 100%;
+        display: flex;
+        .list {
+            width: 220px;
+            border-right: 1px solid #e0e1e5;
+            ul {
+                li {
+                    height: 50px;
+                    padding-left: 10px;
+                    border-bottom: 1px solid #e0e1e5;
+                    &.active,
+                    &:hover {
+                        background-color: #eaf0fb;
+                    }
+                }
+            }
+            .note-item {
+                display: flex;
+                height: 100%;
+                align-items: center;
+                .react-contextmenu-wrapper {
+                    flex: 1;
+                    height: 100%;
+                }
+                .detail {
+                    flex: 1;
+                    display: flex;
+                    flex-flow: column;
+                    height: 100%;
+                    cursor: default;
+                    .title {
+                        user-select: none;
+                        flex: 1;
+                        align-items: center;
+                        display: flex;
+                        color: #393939;
+                        font-size: 14px;
+                    }
+                    .time {
+                        user-select: none;
+                        height: 20px;
+                        color: #c2c2c2;
+                    }
+                }
+                .action {
+                    display: none;
+                    height: 100%;
+                }
+                &:hover {
+                    .action {
+                        display: flex;
+                        align-items: center;
+                        width: 20px;
+                        .anticon {
+                            cursor: pointer;
+                            &:hover {
+                                color: #76b0f3;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .note-detail {
+            flex: 1;
+            display: flex;
+            flex-flow: column;
+            &-header {
+                height: 50px;
+                border-bottom: 1px solid #e0e1e5;
+                padding: 0 20px;
+                display: flex;
+                align-items: center;
+                .title {
+                    flex: 1;
+                }
+            }
+            .content {
+                .ant-input,
+                .ant-input:focus {
+                    font-size: 14px;
+                    border: 0;
+                    box-shadow: none;
+                }
+            }
+            .markdown-body {
+                padding: 20px;
+                flex: 1;
+                overflow-y: auto;
+            }
+        }
+    }
+}

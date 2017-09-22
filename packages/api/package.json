@@ -30,6 +30,7 @@
     "mongoose": "^4.11.11",
     "mongoose-json-select": "^0.2.1",
     "mongoose-long": "^0.1.1",
+    "node-rsa": "^0.4.2",
     "nodemailer": "^4.1.0",
     "randomatic": "^1.1.7",
     "validator": "^8.2.0"

@@ -1,0 +1,23 @@
+.note-edit {
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+    &-header {
+        height: 50px;
+        border-bottom: 1px solid #e0e1e5;
+        padding: 0 20px;
+        display: flex;
+        align-items: center;
+        .title {
+            flex: 1;
+        }
+    }
+    .content {
+        .ant-input,
+        .ant-input:focus {
+            font-size: 14px;
+            border: 0;
+            box-shadow: none;
+        }
+    }
+}

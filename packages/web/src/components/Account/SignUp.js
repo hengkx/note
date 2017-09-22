@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Input, Checkbox, Button, message } from 'antd';
 import { Link } from 'react-router-dom';
-// import { rsa } from '../../utils';
+import { rsa } from '../../utils';
 import './less/account.less';
 
 const FormItem = Form.Item;
@@ -51,7 +51,7 @@ class SignUp extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const password = values.password;// rsa.encrypt(values.password);
+        const password = rsa.encrypt(values.password);
 
         this.props.signUp({
           password,

@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 import { SignIn } from '../components/Account';
-import { signIn, checkUsernameExist } from '../redux/account';
+import { signIn, sendActiveEmail } from '../redux/account';
 
 const mapStateToProps = (state) => ({
   signInResult: state.account.signInResult,
-  checkUsernameExistResult: state.account.checkUsernameExistResult,
+  sendActiveEmailResult: state.account.sendActiveEmailResult,
   isfetching: state.account.isfetching,
 });
 
 export default connect(
   mapStateToProps,
-  { signIn, checkUsernameExist }
+  { signIn, sendActiveEmail }
 )(SignIn);
