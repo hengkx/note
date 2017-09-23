@@ -22,7 +22,7 @@ class NoteEdit extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    const { getTagListResult, note } = nextProps;
+    const { getTagListResult, base64ImgResult, note } = nextProps;
 
     if (this.props.note !== note) {
       this.setState({ note });
@@ -32,6 +32,14 @@ class NoteEdit extends React.Component {
       if (getTagListResult.code === 0) {
         const { data } = getTagListResult;
         this.setState({ tags: data });
+      }
+    }
+    if (this.props.base64ImgResult !== base64ImgResult) {
+      if (base64ImgResult.code === 0) {
+        const { data } = base64ImgResult;
+        const { content } = note;
+        note.content = content.replace('![Uploading image.png…]()', `![image](${data})`);
+        this.setState({ note });
       }
     }
   }
@@ -55,7 +63,28 @@ class NoteEdit extends React.Component {
     note.tags = val;
     this.setState({ note });
   }
-
+  handleContentPasteClick = (e) => {
+    const end = e.target.selectionEnd;
+    const { items } = e.clipboardData;
+    for (let i = 0; i < items.length; i += 1) {
+      const item = items[i];
+      if (item.kind === 'file') {
+        const blob = item.getAsFile();
+        const { note } = this.state;
+        const { content } = note;
+        const uploadContent = '\n![Uploading image.png…]()\n';
+        note.content = `${content.substring(0, end)}${uploadContent}${content.substring(end)}`;
+        this.setState({ note }, () => {
+          this.content.textAreaRef.selectionStart = this.content.textAreaRef.selectionEnd = end + uploadContent.length;
+        });
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          this.props.base64Img({ img: event.target.result });
+        };
+        reader.readAsDataURL(blob);
+      }
+    }
+  }
   render() {
     const { tags, note } = this.state;
     return (
@@ -78,7 +107,12 @@ class NoteEdit extends React.Component {
           {tags.map(tag => <Option key={tag.id} value={tag.name}>{tag.name}</Option>)}
         </Select>
         <div className="content">
-          <TextArea value={note.content} onChange={this.handleContentChange} />
+          <TextArea
+            ref={(content) => { this.content = content; }}
+            value={note.content}
+            onPaste={this.handleContentPasteClick}
+            onChange={this.handleContentChange}
+          />
         </div>
       </div>
     );

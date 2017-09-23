@@ -2,6 +2,8 @@ import Koa from 'Koa';
 import cors from 'kcors';
 import bodyParser from 'koa-bodyparser';
 import session from 'koa-session';
+import serve from 'koa-static';
+import path from 'path';
 import routes from './routes';
 import mongoose from './config/mongoose';
 import responseFormat from './middlewares/responseFormat';
@@ -28,6 +30,7 @@ app.use(async (ctx, next) => {
     // logger.ctxError(ctx, error, ms);
   }
 });
+app.use(serve('./upload'));
 
 app.use(cors({ credentials: true }));
 app.keys = ['hengkxnote'];
