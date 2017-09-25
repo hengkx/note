@@ -19,4 +19,4 @@ router.all('*', async (ctx) => {
   ctx.body = 404;
 });
 
-module.exports = router;
+export default router;
