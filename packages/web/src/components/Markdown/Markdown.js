@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MarkdownIt from 'markdown-it';
 import markdownItTaskLists from 'markdown-it-task-lists';
-import markdownItLatex from 'markdown-it-latex';
 import markdownItGithubToc from 'markdown-it-github-toc';
 import markdownItFootnote from 'markdown-it-footnote';
 import markdownItDeflist from 'markdown-it-deflist';
@@ -20,7 +19,6 @@ const md = new MarkdownIt({
     return ''; // use external default escaping
   }
 }).use(markdownItTaskLists)
-  .use(markdownItLatex)
   .use(markdownItGithubToc, {
     tocFirstLevel: 2,
     tocLastLevel: 3,

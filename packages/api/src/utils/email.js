@@ -1,17 +1,10 @@
 import nodemailer from 'nodemailer';
+import config from '../config';
 
 export default ({ subject, to, html }) => {
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.mxhichina.com',
-    port: 465,
-    secure: true,
-    auth: {
-      user: 'api@hengkx.com',
-      pass: 'ApiApi123'
-    }
-  });
+  const transporter = nodemailer.createTransport(config.email);
   const mailOptions = {
-    from: '云笔记<api@hengkx.com>',
+    from: config.email.from,
     to,
     subject,
     html

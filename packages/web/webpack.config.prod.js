@@ -64,17 +64,19 @@ export default webpackMerge(baseConfig, {
         ])
       }
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      beautify: false,
-      comments: false,
-      mangle: {
-        screw_ie8: true,
-        keep_fnames: true
-      },
-      compress: {
-        screw_ie8: true
-      },
-    }),
+    // new webpack.optimize.UglifyJsPlugin({
+    //   beautify: false,
+    //   comments: false,
+    //   mangle: {
+    //     screw_ie8: true,
+    //     keep_fnames: true
+    //   },
+    //   compress: {
+    //     drop_debugger: true,
+    //     drop_console: true,
+    //     screw_ie8: true
+    //   },
+    // }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
       filename: 'resources/js/vendor-[hash:10].js'

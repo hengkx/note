@@ -1,13 +1,13 @@
-import Koa from 'Koa';
+import Koa from 'koa';
 import cors from 'kcors';
 import bodyParser from 'koa-bodyparser';
 import session from 'koa-session';
 import serve from 'koa-static';
-import path from 'path';
 import routes from './routes';
 import mongoose from './config/mongoose';
 import responseFormat from './middlewares/responseFormat';
 import authorize from './middlewares/authorize';
+import config from './config';
 
 mongoose();
 
@@ -48,6 +48,6 @@ app.on('error', (err, ctx) => {
   console.log('server error', err, ctx)
   // logger.error('server error', err, ctx);
 });
-if (!module.parent) app.listen(3000);
+if (!module.parent) app.listen(config.port || 3000);
 
 export default app;

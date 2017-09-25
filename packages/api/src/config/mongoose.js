@@ -4,7 +4,7 @@ import mongooseLong from 'mongoose-long';
 import config from './';
 // import logger from '../utils/logger';
 
-const logger = { info: console.log };
+const logger = { info: console.log, error: console.error };
 
 mongoose.Promise = bluebird;
 mongooseLong(mongoose);

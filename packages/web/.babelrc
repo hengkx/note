@@ -1,13 +1,10 @@
 {
   "presets": [
-    ["env", {
-        "targets": {
-          "browsers": ["last 2 versions", "safari >= 7"]
-        }
-    }],
+    ["env"],
+    ["es2015", {"modules": false}],
     "stage-0",
     "react"
-  ],
+    ],
     "plugins": [
         "add-module-exports",
         [

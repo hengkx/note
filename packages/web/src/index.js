@@ -11,10 +11,10 @@ import App, { history } from './App';
 // const axios = ReduxReqs.axios;
 
 if (process.env.NODE_ENV === 'development') {
-  // axios.defaults.baseURL = 'http://10.0.1.195:3000/'; // 'http://localhost:3000/';
-  axios.defaults.baseURL = 'http://192.168.56.1:3000/';
+  axios.defaults.baseURL = 'http://10.0.1.195:3000/';
+  // axios.defaults.baseURL = 'http://192.168.56.1:3000/';
 } else {
-  axios.defaults.baseURL = 'http://115.29.168.166:14003/';
+  axios.defaults.baseURL = 'https://api.note.hengkx.com/';
 }
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;

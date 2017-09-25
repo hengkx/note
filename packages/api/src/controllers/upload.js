@@ -2,6 +2,7 @@ import fs from 'fs-extra';
 import uuidV1 from 'uuid/v1';
 import path from 'path';
 import moment from 'moment';
+import config from '../config';
 // import ApiError from '../errors/ApiError';
 
 export async function base64(ctx) {
@@ -19,5 +20,5 @@ export async function base64(ctx) {
   if (path.sep === '\\') {
     urlPath = urlPath.replace(/\\/g, '/');
   }
-  ctx.body = `http://192.168.56.1:3000/${urlPath.replace('upload/', '')}`;
+  ctx.body = `${config.api}/${urlPath.replace('upload/', '')}`;
 }
