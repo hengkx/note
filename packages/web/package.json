@@ -31,6 +31,7 @@
   "dependencies": {
     "antd": "^2.13.3",
     "axios": "^0.16.2",
+    "brace": "^0.10.0",
     "classnames": "^2.2.5",
     "highlight.js": "^9.12.0",
     "history": "^4.7.2",
@@ -49,6 +50,7 @@
     "prop-types": "^15.5.10",
     "randomatic": "^1.1.7",
     "react": "^15.6.1",
+    "react-ace": "^5.2.1",
     "react-contextmenu": "^2.7.0",
     "react-copy-to-clipboard": "^5.0.0",
     "react-dom": "^15.6.1",

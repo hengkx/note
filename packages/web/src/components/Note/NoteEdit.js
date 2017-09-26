@@ -1,10 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Select, Button, Input } from 'antd';
+import brace from 'brace';// eslint-disable-line no-unused-vars
+import AceEditor from 'react-ace';
+import 'brace/mode/markdown';
+import 'brace/theme/tomorrow_night_eighties';
 import './less/noteEdit.less';
 
 const { Option } = Select;
 const { TextArea } = Input;
+
+function onChange(newValue) {
+  console.log('change', newValue);
+}
+
 
 class NoteEdit extends React.Component {
   static propTypes = {
@@ -121,7 +130,7 @@ class NoteEdit extends React.Component {
           {tags.map(tag => <Option key={tag.id} value={tag.name}>{tag.name}</Option>)}
         </Select>
         <div className="content-edit">
-          <div className="number-lines" style={{ width }}>
+          {/* <div className="number-lines" style={{ width }}>
             <ul style={{ top }}>
               {nums}
             </ul>
@@ -133,6 +142,21 @@ class NoteEdit extends React.Component {
             onPaste={this.handleContentPasteClick}
             onChange={this.handleContentChange}
             onScroll={this.handleScroll}
+          /> */}
+          <AceEditor
+            mode="markdown"
+            theme="tomorrow_night_eighties"
+            onChange={onChange}
+            name="UNIQUE_ID_OF_DIV"
+            fontSize="14px"
+            width="100%"
+            height="100%"
+            wrapEnabled
+            showPrintMargin={false}
+            value={note.content}
+            editorProps={{ $blockScrolling: true }}
+            cursorStart={100}
+            focus
           />
         </div>
       </div>
