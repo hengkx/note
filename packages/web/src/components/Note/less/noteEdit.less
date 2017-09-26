@@ -12,12 +12,37 @@
             flex: 1;
         }
     }
-    .content {
-        .ant-input,
-        .ant-input:focus {
+    .content-edit {
+        flex: 1;
+        display: flex; // overflow-y: auto;
+        overflow: hidden;
+        background-color: #1e1e1e;
+        color: #cccccc;
+        .number-lines {
+            overflow: hidden;
+            text-align: right;
             font-size: 14px;
-            border: 0;
-            box-shadow: none;
+            min-width: 20px;
+            position: relative;
+            ul {
+                padding: 0 5px;
+                position: absolute;
+                width: 100%;
+            }
         }
+        textarea {
+            background-color: #2D2D2D;
+            height: 100%;
+            resize: none;
+            width: 100%;
+            border: 0;
+            font-size: 14px;
+            padding: 0 5px;
+        } // .ant-input,
+        // .ant-input:focus {
+        //     font-size: 14px;
+        //     border: 0;
+        //     box-shadow: none;
+        // }
     }
 }

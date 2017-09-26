@@ -75,7 +75,8 @@ class NoteEdit extends React.Component {
         const uploadContent = '\n![Uploading image.png…]()\n';
         note.content = `${content.substring(0, end)}${uploadContent}${content.substring(end)}`;
         this.setState({ note }, () => {
-          this.content.textAreaRef.selectionStart = this.content.textAreaRef.selectionEnd = end + uploadContent.length;
+          // this.content.textAreaRef.selectionStart = this.content.textAreaRef.selectionEnd = end + uploadContent.length;
+          this.content.selectionStart = this.content.selectionEnd = end + uploadContent.length;
         });
         const reader = new FileReader();
         reader.onload = (event) => {
@@ -85,8 +86,21 @@ class NoteEdit extends React.Component {
       }
     }
   }
+  handleScroll = (e) => {
+    const { scrollHeight, scrollTop, clientHeight } = e.target;
+    console.log(scrollHeight, scrollTop, clientHeight);
+    console.log(this.content);
+    this.setState({ top: -scrollTop });
+  }
   render() {
-    const { tags, note } = this.state;
+    const { tags, note, top } = this.state;
+    const lineCount = note.content.split('\n').length + 1;
+    const nums = [];
+    for (let i = 0; i < lineCount; i += 1) {
+      nums.push(<li key={i}>{i + 1}</li>);
+    }
+    const bits = `${lineCount}`.length;
+    const width = 25 + ((bits - 1) * 10);
     return (
       <div className="note-edit">
         <div className="detail-header">
@@ -106,12 +120,19 @@ class NoteEdit extends React.Component {
         >
           {tags.map(tag => <Option key={tag.id} value={tag.name}>{tag.name}</Option>)}
         </Select>
-        <div className="content">
-          <TextArea
+        <div className="content-edit">
+          <div className="number-lines" style={{ width }}>
+            <ul style={{ top }}>
+              {nums}
+            </ul>
+          </div>
+          <textarea
             ref={(content) => { this.content = content; }}
+            spellCheck={false}
             value={note.content}
             onPaste={this.handleContentPasteClick}
             onChange={this.handleContentChange}
+            onScroll={this.handleScroll}
           />
         </div>
       </div>
