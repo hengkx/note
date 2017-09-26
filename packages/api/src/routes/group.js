@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { signup, getList, add, del } from '../controllers/group';
+import { getList, add, del } from '../controllers/group';
 
 const router = new Router({
   prefix: '/group'
@@ -7,7 +7,6 @@ const router = new Router({
 
 router
   .get('/', getList)
-  .post('/signup', signup)
   .post('/', add)
   .del('/:id', del);
 
