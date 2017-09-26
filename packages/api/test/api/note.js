@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-expressions */
 import supertest from 'supertest';
 import { expect } from 'chai';
-import app from '../src/app';
-import { Note } from '../src/models';
-import { encrypt } from '../src/utils/rsa';
+import app from '../../src/app';
+import { Note } from '../../src/models';
+import user from '../data/user';
 
 const request = supertest.agent(app.listen());
 describe('note', () => {
@@ -11,10 +11,7 @@ describe('note', () => {
   before((done) => {
     request
       .post('/api/account/signin')
-      .send({
-        email: 'ycxzhkx@gmail.com',
-        password: encrypt('QCfIhAz8vi8l')
-      })
+      .send(user)
       .end((err, res) => {
         if (err) { return done(err); }
 

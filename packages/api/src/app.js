@@ -44,10 +44,10 @@ app.use(bodyParser());
 app.use(responseFormat('^/api'));
 app.use(authorize());
 app.use(routes.routes());
-app.on('error', (err, ctx) => {
-  console.log('server error', err, ctx)
-  // logger.error('server error', err, ctx);
-});
+// app.on('error', (err, ctx) => {
+//   console.log('server error', err, ctx)
+//   // logger.error('server error', err, ctx);
+// });
 if (!module.parent) app.listen(config.port || 3000);
 
 export default app;

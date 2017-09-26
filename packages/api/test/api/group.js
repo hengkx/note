@@ -1,34 +1,44 @@
 /* eslint-disable no-unused-expressions */
 import supertest from 'supertest';
 import { expect } from 'chai';
-import app from '../src/app';
-import { Note } from '../src/models';
-import { encrypt } from '../src/utils/rsa';
+import app from '../../src/app';
+import { Note } from '../../src/models';
+import user from '../data/user';
 
 const request = supertest.agent(app.listen());
 describe('group', () => {
   // before all the tests run, log in
-  // before((done) => {
-  //   request
-  //     .post('/api/account/signin')
-  //     .send({
-  //       email: 'ycxzhkx@gmail.com',
-  //       password: encrypt('QCfIhAz8vi8l')
-  //     })
-  //     .end((err, res) => {
-  //       if (err) { return done(err); }
+  before((done) => {
+    request
+      .post('/api/account/signin')
+      .send(user)
+      .end((err, res) => {
+        if (err) { return done(err); }
 
-  //       expect(res.body).to.have.property('code').with.to.equal(0);
+        expect(res.body).to.have.property('code').with.to.equal(0);
 
-  //       done();
-  //     });
-  // });
+        done();
+      });
+  });
+
+
+  describe('not found', () => {
+    it('code should return 404', (done) => {
+      request
+        .get('/api/notfound')
+        .expect(200)
+        .end((err, res) => {
+          expect(res.body).to.have.property('code').with.to.equal(404);
+          done(err);
+        });
+    });
+  });
 
   // In this test it's expected a project list
-  describe('GET /api/note', () => {
-    it('return a list of notes', (done) => {
+  describe('GET /api/group', () => {
+    it('return a list of groups', (done) => {
       request
-        .get('/api/note')
+        .get('/api/group')
         .expect(200)
         .end((err, res) => {
           expect(res.body).to.have.property('code').with.to.equal(0);

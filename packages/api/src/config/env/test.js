@@ -1,6 +1,6 @@
 export default {
   port: 3000,
-  mongodb: 'mongodb://59.110.45.114/note',
+  mongodb: 'mongodb://59.110.45.114/note-test',
   mongooseReconnectMs: 1000,
   mongooseDebug: false,
   email: {
@@ -9,7 +9,7 @@ export default {
     secure: true,
     auth: {
       user: 'api@hengkx.com',
-      pass: 'ApiApi123'
+      pass: 'Test123456'
     },
     from: '云笔记<api@hengkx.com>'
   },

@@ -14,19 +14,6 @@ export default function () {
   // create the database connection
   mongoose.set('debug', config.mongooseDebug);
 
-  // when the connection is connected
-  mongoose.connection.on('connected', () => {
-    // logger.info(`mongoose connection open to ${config.mongodb}`);
-  });
-
-  // if the connection throws an error
-  mongoose.connection.on('error', err => logger.error(err));
-
-  // when the connection is disconnected
-  mongoose.connection.on('disconnected', () => {
-    logger.info('mongoose disconnected');
-  });
-
   (async () => await reconnect())();// eslint-disable-line no-return-await
   return mongoose;
 }

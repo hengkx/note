@@ -9,7 +9,7 @@ export default {
     secure: true,
     auth: {
       user: 'api@hengkx.com',
-      pass: 'ApiApi123'
+      pass: 'Test123456'
     },
     from: '云笔记<api@hengkx.com>'
   },
