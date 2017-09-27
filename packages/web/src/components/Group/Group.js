@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { message, Modal, Input, Tree } from 'antd';
+import { message, Modal, Menu, Dropdown, Input, Tree, Icon } from 'antd';
 import { ContextMenuTrigger } from 'react-contextmenu';
 import GroupMenu from './GroupMenu';
 import { toTree } from '../../utils';
@@ -66,7 +66,7 @@ class Group extends React.Component {
   }
   handleMenuClick = (e, data) => {
     if (data.action === 'add_group') {
-      this.setState({ visible: true, currentGroup: data.group });
+      this.setState({ visible: true, currentGroupId: data.group.id });
     } else if (data.action === 'del_group') {
       this.props.del({ id: data.group.id });
     } else if (data.action === 'add_note') {
@@ -74,8 +74,8 @@ class Group extends React.Component {
     }
   }
   handleOkClick = () => {
-    const { currentGroup, groupName } = this.state;
-    this.props.add({ name: groupName, parent: currentGroup.id });
+    const { currentGroupId, groupName } = this.state;
+    this.props.add({ name: groupName, parent: currentGroupId });
     this.setState({ visible: false });
   }
   handleExpand = (expandedKeys) => {
@@ -85,10 +85,14 @@ class Group extends React.Component {
     this.props.getNoteList({ group: selectedKeys[0] });
     this.setState({ selectedKeys });
   }
-  handleSelectedNoteClick = (note) => {
-    this.setState({ selectedNote: note, isEdit: false });
+  handleAddGroupClick = () => {
+    const { selectedKeys } = this.state;
+    this.setState({ visible: true, currentGroupId: selectedKeys[0] });
   }
-
+  handleAddNoteClick = () => {
+    const { selectedKeys } = this.state;
+    this.props.addNote({ group: selectedKeys[0], title: '无标题笔记', content: '' });
+  }
   render() {
     const { visible, groupName, groupTree, expandedKeys, selectedKeys } = this.state;
     const groupItem = (group) => (
@@ -112,8 +116,27 @@ class Group extends React.Component {
       }
       return (<TreeNode key={item.id} title={groupItem(item)} />);
     });
+
+    const menu = (
+      <Menu>
+        <Menu.Item key="0">
+          <a href="javascript:void(0)" onClick={this.handleAddNoteClick}>新建笔记</a>
+        </Menu.Item>
+        <Menu.Item key="1">
+          <a href="javascript:void(0)" onClick={this.handleAddGroupClick}>新建分组</a>
+        </Menu.Item>
+      </Menu>
+    );
+
     return (
       <div className="group">
+        <div className="group-header">
+          <Dropdown overlay={menu} trigger={['click']}>
+            <a className="ant-dropdown-link" href="#">
+              <Icon type="plus" />新建
+            </a>
+          </Dropdown>
+        </div>
         <Tree
           className="group-tree"
           onSelect={this.handleSelect}

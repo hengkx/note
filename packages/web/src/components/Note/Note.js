@@ -43,7 +43,11 @@ class Note extends React.Component {
           note.sourceTags = note.tags;// eslint-disable-line no-param-reassign
           note.tags = note.tags.map(tag => (tag.name));// eslint-disable-line no-param-reassign
         });
-        this.setState({ notes });
+        let group;
+        if (notes.length > 0) {
+          group = notes[0].group;
+        }
+        this.setState({ notes, group });
       } else {
         message.error(getNoteListResult.message);
       }
@@ -82,8 +86,9 @@ class Note extends React.Component {
     }
     if (this.props.delNoteResult !== delNoteResult) {
       if (delNoteResult.code === 0) {
-        const { groupSelectedKeys } = this.state;
-        this.props.getNoteList({ group: groupSelectedKeys[0] });
+        const { group } = this.state;
+        message.success('删除笔记成功！');
+        this.props.getNoteList({ group });
       } else {
         message.error(delNoteResult.message);
       }
@@ -93,6 +98,7 @@ class Note extends React.Component {
         message.success('新建笔记成功！');
         const { data } = addNoteResult;
         this.props.getNoteList({ group: data.group });
+        this.setState({ group: data.group, selectedNoteId: data.id, selectedNote: data, isEdit: true });
       } else {
         message.error(addNoteResult.message);
       }
@@ -100,7 +106,7 @@ class Note extends React.Component {
   }
 
   handleSelectedNoteClick = (note) => {
-    this.setState({ selectedNote: note, isEdit: false });
+    this.setState({ selectedNote: note, selectedNoteId: note.id, isEdit: false });
   }
   handleDelNoteClick = (note) => {
     this.props.delNote({ id: note.id });
@@ -116,7 +122,7 @@ class Note extends React.Component {
     }
   }
   render() {
-    const { notes, isEdit, selectedNote } = this.state;
+    const { notes, isEdit, selectedNote, selectedNoteId } = this.state;
 
     return (
       <div className="note">
@@ -126,7 +132,7 @@ class Note extends React.Component {
               {notes.map(item => (
                 <li
                   key={item.id}
-                  className={selectedNote === item ? 'active' : ''}
+                  className={selectedNoteId === item.id ? 'active' : ''}
                   onClick={() => { this.handleSelectedNoteClick(item); }}
                 >
 

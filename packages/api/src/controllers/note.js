@@ -4,7 +4,7 @@ import { Group, Note, Tag } from '../models';
 export async function getList(ctx) {
   const { id } = ctx.session;
   const { group } = ctx.query;
-  const notes = await Note.find({ user: id, group }).populate('tags');
+  const notes = await Note.find({ user: id, group }).sort('-created_at').populate('tags');
 
   ctx.body = notes;
 }

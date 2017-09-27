@@ -6,6 +6,10 @@ import { Modal, Input, Button, message, Icon, Tag } from 'antd';
 import Markdown from '../Markdown';
 
 class Share extends React.Component {
+  static propTypes = {
+    getShareContent: PropTypes.func.isRequired,
+    getShareContentResult: PropTypes.object
+  }
   constructor(props) {
     super(props);
     const { id, type } = url.parse(window.location.href, true).query;
@@ -33,7 +37,7 @@ class Share extends React.Component {
     const { note } = this.state;
     if (!note) return <div />;
     return (
-      <div className="share">
+      <div className="share" style={{ width: 700, margin: '0 auto' }}>
         <div className="note-detail-header">
           <div className="title">
             {note.title}
