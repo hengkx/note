@@ -32,6 +32,14 @@ class Share extends React.Component {
       }
     }
   }
+  // componentDidUpdate() {
+  //   const anchorName = this.props.location.hash;
+  //   console.log(anchorName, anchorName.substr(1));
+  //   const anchorElement = document.getElementById(anchorName.substr(1));
+  //   console.log(anchorElement);
+  //   // 如果对应id的锚点存在，就跳转到锚点
+  //   if (anchorElement) { anchorElement.scrollIntoView(); }
+  // }
 
   render() {
     const { note } = this.state;

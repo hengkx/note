@@ -7,7 +7,7 @@ import baseConfig from './webpack.config.base';
 import theme from './themes/theme';
 
 const host = ip.address();
-const port = 5001;
+const port = 5005;
 
 export default webpackMerge(baseConfig, {
   devtool: 'cheap-module-source-map',
