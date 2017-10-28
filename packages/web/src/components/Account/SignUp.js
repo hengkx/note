@@ -14,7 +14,6 @@ class SignUp extends React.Component {
     signUp: PropTypes.func.isRequired,
     checkUsernameExist: PropTypes.func.isRequired,
     signUpResult: PropTypes.object,
-    checkUsernameExistResult: PropTypes.object,
   }
 
   constructor(props) {

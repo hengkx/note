@@ -8,6 +8,7 @@ import CopyToClipboard from 'react-copy-to-clipboard';
 import NoteMenu from './NoteMenu';
 import Markdown from '../Markdown';
 import NoteEdit from '../../containers/NoteEdit';
+import NoteLog from '../../containers/NoteLog';
 import './less/note.less';
 
 class Note extends React.Component {
@@ -25,6 +26,7 @@ class Note extends React.Component {
     super(props);
     this.state = {
       notes: [],
+      status: 0
     };
   }
   componentDidMount() {
@@ -106,7 +108,7 @@ class Note extends React.Component {
   }
 
   handleSelectedNoteClick = (note) => {
-    this.setState({ selectedNote: note, selectedNoteId: note.id, isEdit: false });
+    this.setState({ selectedNote: note, selectedNoteId: note.id, status: 0 });
   }
   handleDelNoteClick = (note) => {
     this.props.delNote({ id: note.id });
@@ -122,7 +124,7 @@ class Note extends React.Component {
     }
   }
   render() {
-    const { notes, isEdit, selectedNote, selectedNoteId } = this.state;
+    const { notes, status, selectedNote, selectedNoteId } = this.state;
 
     return (
       <div className="note">
@@ -161,10 +163,13 @@ class Note extends React.Component {
             </ul>
             <NoteMenu />
           </div>
-          {isEdit &&
+          {status === 1 &&
             <NoteEdit note={selectedNote} />
           }
-          {selectedNote && !isEdit &&
+          {status === 2 &&
+            <NoteLog id={selectedNote.id} />
+          }
+          {selectedNote && !status &&
             <div className="note-detail">
               <div className="note-detail-header">
                 <div className="title">
@@ -174,7 +179,8 @@ class Note extends React.Component {
                   {selectedNote.sourceTags.map(tag => (<Tag key={tag.id}>{tag.name}</Tag>))}
                 </div>
                 <div className="action">
-                  <Button onClick={() => { this.setState({ isEdit: true }); }}>编辑</Button>
+                  <Button onClick={() => { this.setState({ status: 2 }); }}>历史版本</Button>
+                  <Button onClick={() => { this.setState({ status: 1 }); }}>编辑</Button>
                 </div>
               </div>
               <Markdown content={selectedNote.content} />

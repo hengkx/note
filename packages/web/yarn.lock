@@ -4198,6 +4198,10 @@ jschardet@^1.4.2:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/jschardet/-/jschardet-1.5.1.tgz#c519f629f86b3a5bedba58a88d311309eec097f9"
 
+jsdifflib@hengkx/jsdifflib:
+  version "1.0.0"
+  resolved "https://codeload.github.com/hengkx/jsdifflib/tar.gz/56ce759739e4ecd9d0b258eea604673f53b89502"
+
 jsencrypt@^2.3.1:
   version "2.3.1"
   resolved "https://registry.yarnpkg.com/jsencrypt/-/jsencrypt-2.3.1.tgz#64edcb781bf92035db6a95901012e91c0f42eaca"

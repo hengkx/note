@@ -1,5 +1,5 @@
 import ApiError from '../errors/ApiError';
-import { Group, Note, Tag } from '../models';
+import { Group, Note, NoteLog, Tag } from '../models';
 
 export async function getList(ctx) {
   const { id } = ctx.session;
@@ -52,6 +52,18 @@ export async function update(ctx) {
     title, content, tags: tagIds
   }, { new: true });
 
+  NoteLog.create({
+    user,
+    note: id,
+    old: {
+      title: note.title,
+      content: note.content,
+      tags: note.tags,
+      group: note.group
+    },
+    new: { title, content, tags, group: note.group }
+  });
+
   ctx.body = res;
 }
 
@@ -76,4 +88,10 @@ export async function getShareContent(ctx) {
     if (!note) throw new ApiError('NOTE_NOT_EXISTS');
     ctx.body = note;
   }
+}
+export async function getLogList(ctx) {
+  const { id } = ctx.params;
+  const user = ctx.session.id;
+  const noteLogs = await NoteLog.find({ note: id, user });
+  ctx.body = noteLogs;
 }
