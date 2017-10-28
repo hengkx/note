@@ -29,7 +29,7 @@ class NoteLog extends React.Component {
   }
   handleSelected = (log) => {
     const compare = difflib(log.old.content, log.new.content);
-    console.log(compare);
+    // console.log(compare);
     this.setState({ selectedLog: log, compare });
   }
   renderCompare = () => {
@@ -70,7 +70,7 @@ class NoteLog extends React.Component {
         for (let i = nb; i < ne; i += 1) {
           eles.push(
             <tr className="equal" key={`n${i}`}>
-              <td className="line-number">{i + 1}</td>
+              <td className="line-number">{ob + 1 + (i - nb)}</td>
               <td className="line-number">{i + 1}</td>
               <td className="con">{newTextLines[i]}</td>
             </tr>
