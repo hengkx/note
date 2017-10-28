@@ -176,7 +176,7 @@ class Note extends React.Component {
                   {selectedNote.title}
                 </div>
                 <div className="tag">
-                  {selectedNote.sourceTags.map(tag => (<Tag key={tag.id}>{tag.name}</Tag>))}
+                  {selectedNote.sourceTags && selectedNote.sourceTags.map(tag => (<Tag key={tag.id}>{tag.name}</Tag>))}
                 </div>
                 <div className="action">
                   <Button onClick={() => { this.setState({ status: 2 }); }}>历史版本</Button>

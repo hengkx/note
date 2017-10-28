@@ -15,6 +15,7 @@ class NoteEdit extends React.Component {
     base64Img: PropTypes.func.isRequired,
     note: PropTypes.object,
     getTagListResult: PropTypes.object,
+    updateNoteResult: PropTypes.object,
     base64ImgResult: PropTypes.object,
   };
 
@@ -22,6 +23,7 @@ class NoteEdit extends React.Component {
     super(props);
     this.state = {
       note: props.note,
+      oldNote: { ...props.note },
       tags: [],
       cursorStart: 1
     };
@@ -34,7 +36,7 @@ class NoteEdit extends React.Component {
     const { getTagListResult, base64ImgResult, note, updateNoteResult } = nextProps;
 
     if (this.props.note !== note) {
-      this.setState({ note });
+      this.setState({ note, oldNote: { ...note } });
     }
 
     if (this.props.getTagListResult !== getTagListResult) {
@@ -46,6 +48,7 @@ class NoteEdit extends React.Component {
     if (this.props.updateNoteResult !== updateNoteResult) {
       if (updateNoteResult.code === 0) {
         message.success('保存成功！');
+        this.setState({ oldNote: updateNoteResult.data });
       }
     }
     if (this.props.base64ImgResult !== base64ImgResult) {
@@ -58,8 +61,10 @@ class NoteEdit extends React.Component {
     }
   }
   updateNote = () => {
-    const { note } = this.state;
-    this.props.updateNote(note);
+    const { note, oldNote } = this.state;
+    if (oldNote.title !== note.title || oldNote.content !== note.content) {
+      this.props.updateNote(note);
+    }
   }
   handleSaveNoteClick = () => {
   }
@@ -119,7 +124,11 @@ class NoteEdit extends React.Component {
       <div className="note-edit">
         <div className="detail-header">
           <div className="title">
-            <Input onBlur={this.handleTitleBlur} value={note.title} onChange={this.handleTitleChange} />
+            <Input
+              onBlur={this.handleTitleBlur}
+              value={note.title}
+              onChange={this.handleTitleChange}
+            />
           </div>
           <div className="action">
             <Button onClick={this.handleSaveNoteClick}>保存</Button>
