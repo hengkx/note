@@ -10,3 +10,5 @@ export { default as Note } from './note';
 export { default as NoteLog } from './noteLog';
 
 export { default as Tag } from './tag';
+
+export { default as Project } from './project';

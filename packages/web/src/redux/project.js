@@ -1,8 +1,8 @@
 import ReduxReqs from 'redux-reqs';
 
 const reduxReqs = new ReduxReqs({
-  prefix: 'GROUP',
-  prefixUrl: '/api/group'
+  prefix: 'PROJECT',
+  prefixUrl: '/api/project'
 });
 
 reduxReqs

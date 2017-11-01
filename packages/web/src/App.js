@@ -23,7 +23,7 @@ export default class extends Component {
       <Provider store={store}>
         <ConnectedRouter history={history}>
           <div>
-            <Route exact path="/" component={withRouter(Main)} />
+            <Route path="/home" component={withRouter(Main)} />
             <Route exact path="/signin" component={withRouter(SignIn)} />
             <Route exact path="/signup" component={withRouter(SignUp)} />
             <Route exact path="/forgot" component={withRouter(Forgot)} />

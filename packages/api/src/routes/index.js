@@ -4,6 +4,7 @@ import group from './group';
 import note from './note';
 import tag from './tag';
 import upload from './upload';
+import project from './project';
 import ApiError from '../errors/ApiError';
 
 const router = new Router({
@@ -15,6 +16,7 @@ router.use(group.routes());
 router.use(note.routes());
 router.use(tag.routes());
 router.use(upload.routes());
+router.use(project.routes());
 
 router.all('*', async () => {
   throw new ApiError('NOT_FOUND');

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Select } from 'antd';
 import { parse as urlParse } from 'url';
+import { Route, Link } from 'react-router-dom';
 import Group from '../../containers/Group';
 import Note from '../../containers/Note';
+import Project from '../../containers/Project';
 import './less/main.less';
 
 const Option = Select.Option;
@@ -27,26 +29,23 @@ class Main extends React.Component {
   }
   render() {
     const { program } = this.state;
+    const { match } = this.props;
     return (
       <div className="main">
         <div className="header">
           <div className="logo">办公</div>
-          <Select value={program} onChange={this.handleChange}>
-            <Option value="note">笔记</Option>
-            <Option value="db">数据库</Option>
-          </Select>
+          <Link to={`${match.url}/note`}>笔记</Link>
+          <Link to={`${match.url}/project`}>项目</Link>
         </div>
-        {program === 'note' &&
-          <div className="container">
-            <Group />
-            <Note />
-          </div>
-        }
-        {program === 'db' &&
-          <div className="container">
-            db
-          </div>
-        }
+        <div className="container">
+          <Route
+            path={`${match.url}/note`}
+            component={() =>
+              (<div className="container"><Group />
+                <Note /></div>)}
+          />
+          <Route path={`${match.url}/project`} component={Project} />
+        </div>
       </div>
     );
   }
