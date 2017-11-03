@@ -7,6 +7,7 @@ import note from './note';
 import tag from './tag';
 import upload from './upload';
 import project from './project';
+import table from './table';
 
 export default combineReducers({
   account,
@@ -15,6 +16,7 @@ export default combineReducers({
   tag,
   upload,
   project,
+  table,
   nprogress,
   router: routerReducer,
 });

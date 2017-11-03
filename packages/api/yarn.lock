@@ -1175,10 +1175,6 @@ cliui@^2.1.0:
     right-align "^0.1.1"
     wordwrap "0.0.2"
 
-clone@0.1.9:
-  version "0.1.9"
-  resolved "https://registry.yarnpkg.com/clone/-/clone-0.1.9.tgz#d4d3f10db4338af8792509f5e600ad8a01ff08a0"
-
 co-body@^5.1.0:
   version "5.1.1"
   resolved "https://registry.yarnpkg.com/co-body/-/co-body-5.1.1.tgz#d97781d1e3344ba4a820fd1806bddf8341505236"
@@ -2948,12 +2944,6 @@ mongodb@2.2.31:
     es6-promise "3.2.1"
     mongodb-core "2.1.15"
     readable-stream "2.2.7"
-
-mongoose-json-select@^0.2.1:
-  version "0.2.1"
-  resolved "https://registry.yarnpkg.com/mongoose-json-select/-/mongoose-json-select-0.2.1.tgz#6c267e133dd00eca237eeec9a07030b3a7583a09"
-  dependencies:
-    clone "0.1.9"
 
 mongoose-long@^0.1.1:
   version "0.1.1"

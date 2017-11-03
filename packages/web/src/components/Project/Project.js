@@ -54,7 +54,7 @@ class Project extends Component {
               </FormItem>
             </Form>
             {projects.map(item =>
-              <Link key={item.id} to={`${match.url}/project/${item.id}`}>{item.name}</Link>)}
+              <Link key={item.id} to={`${match.url}/${item.id}`}>{item.name}</Link>)}
           </div>}
 
         <Route path={`${match.url}/:id`} component={Table} />

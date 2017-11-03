@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import Table from '../components/Table';
-import { add, getList } from '../redux/project';
+import { add, getList } from '../redux/table';
 
 const mapStateToProps = (state) => ({
-  addResult: state.project.addResult,
-  getListResult: state.project.getListResult,
+  addResult: state.table.addResult,
+  getListResult: state.table.getListResult,
 });
 
 export default connect(

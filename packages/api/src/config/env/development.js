@@ -2,7 +2,7 @@ export default {
   port: 3000,
   mongodb: 'mongodb://59.110.45.114/note',
   mongooseReconnectMs: 1000,
-  mongooseDebug: true,
+  mongooseDebug: false,
   email: {
     host: 'smtp.mxhichina.com',
     port: 465,

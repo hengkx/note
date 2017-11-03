@@ -1,14 +1,15 @@
 import Router from 'koa-router';
-import { getList, add, del, getById } from '../controllers/project';
+import { getList, add, update, del, getById } from '../controllers/table';
 
 const router = new Router({
-  prefix: '/project'
+  prefix: '/table'
 });
 
 router
   .get('/', getList)
   .get('/:id', getById)
   .post('/', add)
+  .put('/:id', update)
   .del('/:id', del);
 
 export default router;

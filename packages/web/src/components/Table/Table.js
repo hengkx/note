@@ -1,73 +1,44 @@
 import React, { Component } from 'react';
-import { Table, Button, Input, Form } from 'antd';
+import { Button, Input, Form } from 'antd';
+import { Route, Link } from 'react-router-dom';
 import DynamicTable from '../DynamicTable';
+import TableEdit from '../../containers/TableEdit';
 
 const FormItem = Form.Item;
 
 class TableC extends Component {
-  handleChange = (val) => {
-    console.log(val);
+  constructor(props) {
+    super(props);
+    this.state = {
+      columns: [],
+      tables: []
+    };
   }
-  render() {
-    const columns = [
-      {
-        title: '表名',
-        dataIndex: 'name',
-        key: 'name',
-      },
-    ];
-    const tables = [];
-    const { getFieldDecorator } = this.props.form;
+  componentDidMount() {
+    this.props.getList();
+  }
+  componentWillReceiveProps(nextProps) {
+    const { getListResult } = nextProps;
+    if (getListResult !== this.props.getListResult) {
+      this.setState({ tables: getListResult.data });
+    }
+  }
 
-    const tableColumns = [
-      {
-        title: '字段名称',
-        dataIndex: 'name',
-      },
-      {
-        title: '类型',
-        dataIndex: 'type',
-      },
-      {
-        title: '非空',
-        dataIndex: 'required',
-        type: 'checkbox'
-      },
-      {
-        title: '默认值',
-        dataIndex: 'defaultValue',
-      },
-      {
-        title: '备注',
-        dataIndex: 'remark',
-      },
-    ];
-    const source = [
-      {
-        name: 'test',
-        required: true
-      }
-    ];
+
+  render() {
+    const { tables } = this.state;
+    const { getFieldDecorator } = this.props.form;
+    const { match } = this.props;
     return (
       <div>
-        <Form layout="inline" onSubmit={this.handleSubmit}>
-          <FormItem>
-            {getFieldDecorator('name', {
-              rules: [{ required: true, message: '' }],
-            })(<Input />)}
-          </FormItem>
-          <FormItem>
-            <Button type="primary" htmlType="submit">添加</Button>
-          </FormItem>
-        </Form>
-        <Input placeholder="表名" />
-        <DynamicTable dataSource={source} columns={tableColumns} onChange={this.handleChange} />
-        <div className="column">
-          <div className="title">
-
+        {match.isExact &&
+          <div>
+            <Link to={`${match.url}/table`}>添加表</Link>
+            {tables.map(item => <Link key={item.id} to={`${match.url}/table/${item.id}`}>{item.name}</Link>)}
           </div>
-        </div>
-        <Table dataSource={tables} columns={columns} />
+        }
+
+        <Route path={`${match.path}/table/:tableId?`} component={TableEdit} />
       </div>
     );
   }

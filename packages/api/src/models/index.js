@@ -12,3 +12,8 @@ export { default as NoteLog } from './noteLog';
 export { default as Tag } from './tag';
 
 export { default as Project } from './project';
+
+export { default as Table } from './table';
+
+export { default as TableColumn } from './tableColumn';
+

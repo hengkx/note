@@ -1,4 +1,4 @@
-import jsonSelect from 'mongoose-json-select';
+/* eslint-disable func-names */
 
 function CommonPlugin(Schema) {
   Schema.add({
@@ -17,8 +17,11 @@ function CommonPlugin(Schema) {
       required: true
     }
   });
-
-  Schema.pre('validate', function (next) { // eslint-disable-line func-names
+  Schema.pre('findOneAndUpdate', function (next) {
+    this.options.runValidators = true;
+    next();
+  });
+  Schema.pre('validate', function (next) {
     if (this.created_at) {
       this.updated_at = Math.round(Date.now() / 1000);
     } else {
@@ -28,11 +31,30 @@ function CommonPlugin(Schema) {
     this.id = this._id.toString();
     next();
   });
+  Schema.pre('update', function (next) {
+    const update = this.getUpdate();
+    console.log(update);
+    update.$set = update.$set || {};
+    update.$set.updated_at = Math.round(Date.now() / 1000);
 
-  Schema.plugin(
-    jsonSelect,
-    ['_id', '__v'].map(field => `-${field}`).join(' ')
-  );
+    // update.$setOnInsert = update.$setOnInsert || {};
+    // update.$setOnInsert.created_at = Math.round(Date.now() / 1000);
+
+    next();
+  });
+
+  Schema.pre('findByIdAndUpdate', function (next) {
+    const update = this.getUpdate();
+    update.updated_at = Math.round(Date.now() / 1000);
+    next();
+  });
+  Schema.pre('findOneAndUpdate', function (next) {
+    const update = this.getUpdate();
+    // console.log(this);
+    update.updated_at = Math.round(Date.now() / 1000);
+    next();
+  });
+
   return Schema;
 }
 

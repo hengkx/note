@@ -33,7 +33,6 @@
     "koa-static": "^4.0.1",
     "moment": "^2.18.1",
     "mongoose": "^4.11.11",
-    "mongoose-json-select": "^0.2.1",
     "mongoose-long": "^0.1.1",
     "node-rsa": "^0.4.2",
     "nodemailer": "^4.1.0",

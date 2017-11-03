@@ -7,6 +7,7 @@ import { watchSagas as noteSagas } from './note';
 import { watchSagas as tagSagas } from './tag';
 import { watchSagas as uploadSagas } from './upload';
 import { watchSagas as projectSagas } from './project';
+import { watchSagas as tableSagas } from './table';
 
 ReduxReqs.defaults = {
   beforeAction: beginTask(),
@@ -20,6 +21,7 @@ export default function* rootSaga() {
     ...noteSagas,
     ...tagSagas,
     ...uploadSagas,
-    ...projectSagas
+    ...projectSagas,
+    ...tableSagas
   ]);
 }

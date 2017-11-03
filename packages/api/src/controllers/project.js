@@ -3,14 +3,16 @@ import { Project } from '../models';
 
 export async function getList(ctx) {
   const { id } = ctx.session;
-  let groups = await Project.find({ user: id });
-  if (groups.length === 0) {
-    await Project.create({ name: '我的分组', user: id });
-    groups = await Project.find({ user: id });
-  }
+  const groups = await Project.find({ user: id });
   ctx.body = groups;
 }
 
+export async function getById(ctx) {
+  const { id } = ctx.params;
+  const user = ctx.session.id;
+  const table = await Project.findOne({ user, id });
+  ctx.body = table;
+}
 
 export async function add(ctx) {
   const { id } = ctx.session;
