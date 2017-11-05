@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Input, Form } from 'antd';
+import { Button, Input, Form, Table } from 'antd';
 import { Route, Link } from 'react-router-dom';
-import Table from '../../containers/Table';
+import moment from 'moment';
+import TableList from '../../containers/Table';
+import './less/project.less';
 
 const FormItem = Form.Item;
 
@@ -36,9 +38,29 @@ class Project extends Component {
     const { getFieldDecorator } = this.props.form;
     const { projects } = this.state;
     const { match } = this.props;
-    console.log(match);
+    console.log(projects);
+    const columns = [
+      {
+        title: '项目',
+        dataIndex: 'name',
+        render: (text, record) =>
+          (<Link key={record.id} to={`${match.url}/${record.id}`}>{text}</Link>)
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'created_at',
+        render: (text) =>
+          (moment.unix(text).format('YYYY-MM-DD HH:mm:ss'))
+      },
+      {
+        title: '修改时间',
+        dataIndex: 'updated_at',
+        render: (text) =>
+          (moment.unix(text).format('YYYY-MM-DD HH:mm:ss'))
+      },
+    ];
     return (
-      <div>
+      <div className="project">
         {match.isExact &&
           <div>
             <Form layout="inline" onSubmit={this.handleSubmit}>
@@ -53,12 +75,11 @@ class Project extends Component {
                 </Button>
               </FormItem>
             </Form>
-            {projects.map(item =>
-              <Link key={item.id} to={`${match.url}/${item.id}`}>{item.name}</Link>)}
-          </div>}
-
-        <Route path={`${match.url}/:id`} component={Table} />
-      </div>
+            <Table rowKey="_id" dataSource={projects} columns={columns} />
+          </div>
+        }
+        <Route path={`${match.url}/:id`} component={TableList} />
+      </div >
     );
   }
 }
