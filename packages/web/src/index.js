@@ -11,8 +11,8 @@ import App, { history } from './App';
 // const axios = ReduxReqs.axios;
 
 if (process.env.NODE_ENV === 'development') {
-  // axios.defaults.baseURL = 'http://10.0.1.195:3000/';
-  axios.defaults.baseURL = 'http://192.168.56.1:3000/';
+  axios.defaults.baseURL = 'http://10.0.1.195:3000/';
+  // axios.defaults.baseURL = 'http://192.168.56.1:3000/';
 } else {
   // axios.defaults.baseURL = 'https://api.note.hengkx.com/';
   axios.defaults.baseURL = 'http://api.note.hengkx.com/';

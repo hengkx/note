@@ -35,7 +35,7 @@ class SignIn extends React.Component {
       } else if (signInResult.code !== 0) {
         message.error(signInResult.message);
       } else {
-        this.props.history.push('/');
+        this.props.history.push('/home/project');
       }
     }
     if (sendActiveEmailResult !== this.props.sendActiveEmailResult) {
