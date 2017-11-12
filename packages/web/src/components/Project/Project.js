@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import { Button, Input, Form, Table } from 'antd';
 import { Route, Link } from 'react-router-dom';
 import moment from 'moment';
@@ -7,7 +8,14 @@ import './less/project.less';
 
 const FormItem = Form.Item;
 
-class Project extends Component {
+class Project extends React.Component {
+  static propTypes = {
+    form: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    getListResult: PropTypes.object,
+    getList: PropTypes.func.isRequired,
+    add: PropTypes.func.isRequired
+  }
   constructor(props) {
     super(props);
     this.state = {
@@ -76,10 +84,11 @@ class Project extends Component {
               </FormItem>
             </Form>
             <Table rowKey="_id" dataSource={projects} columns={columns} />
+            a
           </div>
         }
         <Route path={`${match.url}/:id`} component={TableList} />
-      </div >
+      </div>
     );
   }
 }

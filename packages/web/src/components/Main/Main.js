@@ -5,6 +5,7 @@ import { Route, Link } from 'react-router-dom';
 import Group from '../../containers/Group';
 import Note from '../../containers/Note';
 import Project from '../../containers/Project';
+import Param from '../Param';
 import './less/main.less';
 
 const Option = Select.Option;
@@ -36,6 +37,7 @@ class Main extends React.Component {
           <div className="logo">办公</div>
           <Link to={`${match.url}/note`}>笔记</Link>
           <Link to={`${match.url}/project`}>项目</Link>
+          <Link to={`${match.url}/param`}>参数</Link>
         </div>
         <div className="container">
           <Route
@@ -45,6 +47,7 @@ class Main extends React.Component {
                 <Note /></div>)}
           />
           <Route path={`${match.url}/project`} component={Project} />
+          <Route path={`${match.url}/param`} component={Param} />
         </div>
       </div>
     );

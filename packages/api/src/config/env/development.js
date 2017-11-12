@@ -1,6 +1,6 @@
 export default {
   port: 3000,
-  mongodb: 'mongodb://59.110.45.114/note',
+  mongodb: 'mongodb://note-test:test@39.106.106.48/note-test',
   mongooseReconnectMs: 1000,
   mongooseDebug: false,
   email: {
