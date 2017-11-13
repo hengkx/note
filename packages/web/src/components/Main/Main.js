@@ -34,7 +34,7 @@ class Main extends React.Component {
     return (
       <div className="main">
         <div className="header">
-          <div className="logo">办公</div>
+          <div className="logo"></div>
           <Link to={`${match.url}/note`}>笔记</Link>
           <Link to={`${match.url}/project`}>项目</Link>
           <Link to={`${match.url}/param`}>参数</Link>

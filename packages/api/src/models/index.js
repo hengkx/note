@@ -17,3 +17,5 @@ export { default as Table } from './table';
 
 export { default as TableColumn } from './tableColumn';
 
+export { default as Param } from './param';
+

@@ -4,6 +4,7 @@ import { Button, Input, Form, Table } from 'antd';
 import { Route, Link } from 'react-router-dom';
 import moment from 'moment';
 import TableList from '../../containers/Table';
+import ProjectDetail from '../../containers/ProjectDetail';
 import './less/project.less';
 
 const FormItem = Form.Item;
@@ -46,7 +47,6 @@ class Project extends React.Component {
     const { getFieldDecorator } = this.props.form;
     const { projects } = this.state;
     const { match } = this.props;
-    console.log(projects);
     const columns = [
       {
         title: '项目',
@@ -84,10 +84,9 @@ class Project extends React.Component {
               </FormItem>
             </Form>
             <Table rowKey="_id" dataSource={projects} columns={columns} />
-            a
           </div>
         }
-        <Route path={`${match.url}/:id`} component={TableList} />
+        <Route path={`${match.url}/:id`} component={ProjectDetail} />
       </div>
     );
   }

@@ -5,10 +5,12 @@ import Select from '../Select';
 class Row extends React.Component {
   static propTypes = {
     param: PropTypes.object.isRequired,
-    onChange: PropTypes.func
+    onChange: PropTypes.func,
+    onDel: PropTypes.func,
   }
   static defaultProps = {
-    onChange: () => { }
+    onChange: () => { },
+    onDel: () => { },
   }
   constructor(props) {
     super(props);
@@ -26,10 +28,11 @@ class Row extends React.Component {
     const { param } = this.state;
     param[key] = val;
     this.setState({ param });
-    console.log(param);
     this.props.onChange(param, key);
   }
-
+  handleDelClick = () => {
+    this.props.onDel();
+  }
   render() {
     const { param } = this.state;
     return (
@@ -78,6 +81,9 @@ class Row extends React.Component {
             value={param.rule || ''}
             onChange={(e) => this.handleChange(e.target.value, 'rule')}
           />
+        </div>
+        <div className="action">
+          <button className="btn" onClick={this.handleDelClick}>X</button>
         </div>
       </div>
     );
