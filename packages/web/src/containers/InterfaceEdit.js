@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import { Edit } from '../components/Interface';
-import { add, getList } from '../redux/project';
+import { getById, edit } from '../redux/interface';
 
 const mapStateToProps = (state) => ({
-  addResult: state.project.addResult,
-  getListResult: state.project.getListResult,
+  getByIdResult: state.interfaces.getByIdResult,
+  editResult: state.interfaces.editResult,
+  getParamListResult: state.param.getListResult,
 });
 
 export default connect(
   mapStateToProps,
-  { add, getList }
+  { getById, edit }
 )(Edit);

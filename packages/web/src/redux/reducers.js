@@ -9,6 +9,7 @@ import upload from './upload';
 import project from './project';
 import table from './table';
 import interfaces from './interface';
+import param from './param';
 
 export default combineReducers({
   account,
@@ -19,6 +20,7 @@ export default combineReducers({
   project,
   table,
   interfaces,
+  param,
   nprogress,
   router: routerReducer,
 });

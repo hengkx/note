@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Form, Select, Input, Button } from 'antd';
+import { Link } from 'react-router-dom';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -9,13 +10,27 @@ const TextArea = Input.TextArea;
 class Add extends React.Component {
   static propTypes = {
     form: PropTypes.object.isRequired,
-    // match: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    add: PropTypes.func.isRequired,
+    addResult: PropTypes.object,
   }
+
+  componentWillReceiveProps(nextProps) {
+    const { addResult } = nextProps;
+    if (addResult !== this.props.addResult) {
+      if (addResult.code === 0) {
+        this.props.history.push(`${this.props.match.url}/${addResult.data._id}`);
+      }
+    }
+  }
+
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
+        const { id } = this.props.match.params;
+        this.props.add({ ...values, project: id });
       }
     });
   }
@@ -53,9 +68,11 @@ class Add extends React.Component {
       <Option value="PATCH">PATCH</Option>
       <Option value="DELETE">DELETE</Option>
     </Select>);
+    const { id } = this.props.match.params;
 
     return (
       <div>
+        <Link to={`/home/project/${id}`}>返回项目</Link>
         <Form onSubmit={this.handleSubmit}>
           <FormItem
             {...formItemLayout}

@@ -1,8 +1,8 @@
 import ReduxReqs from 'redux-reqs';
 
 const reduxReqs = new ReduxReqs({
-  prefix: 'API',
-  prefixUrl: '/api/interface'
+  prefix: 'PARAM',
+  prefixUrl: '/api/param'
 });
 
 reduxReqs

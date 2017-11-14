@@ -1,38 +1,79 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { message } from 'antd';
 import Row from './Row';
+import { toTree } from '../../utils';
 import './less/param.less';
 
 class Param extends React.Component {
   static propTypes = {
-    params: PropTypes.object,
+    interfaceId: PropTypes.string.isRequired,
+    project: PropTypes.string.isRequired,
+    getList: PropTypes.func.isRequired,
+    add: PropTypes.func.isRequired,
+    edit: PropTypes.func.isRequired,
+    del: PropTypes.func.isRequired,
+    getListResult: PropTypes.object,
+    editResult: PropTypes.object,
+    delResult: PropTypes.object,
+    addResult: PropTypes.object,
     onChange: PropTypes.func,
-    onDel: PropTypes.func,
+    isRequest: PropTypes.bool
   }
   static defaultProps = {
     onChange: () => { },
-    onDel: () => { },
+    isRequest: false
   }
 
   constructor(props) {
     super(props);
     this.state = {
-      params: props.params || []
+      params: [],
+      isRequest: props.isRequest
     };
   }
+  componentDidMount() {
+    this.getParamList();
+  }
 
+  componentWillReceiveProps(nextProps) {
+    const { getListResult, editResult, delResult, addResult, isRequest } = nextProps;
+    if (getListResult !== this.props.getListResult) {
+      if (getListResult.data.is_request === isRequest) {
+        const params = toTree(getListResult.data.params);
+        this.setState({ params });
+        this.props.onChange(params);
+      }
+    }
+    if (editResult !== this.props.editResult) {
+      if (editResult.code === 0 && editResult.data.is_request === isRequest) {
+        message.success('更新成功');
+        this.getParamList();
+      }
+    }
+    if (delResult !== this.props.delResult && delResult.data.is_request === isRequest) {
+      this.getParamList();
+    }
+    if (addResult !== this.props.addResult && addResult.data.is_request === isRequest) {
+      this.getParamList();
+    }
+  }
+  getParamList = () => {
+    const { interfaceId, isRequest } = this.props;
+    this.props.getList({ interface: interfaceId, is_request: isRequest });
+  }
   getCurrentParam = (keys) => {
     const paths = keys.split('.');
     const { params } = this.state;
-    if (!params[paths[1]].childrens) {
-      params[paths[1]].childrens = [];
+    if (!params[paths[1]].children) {
+      params[paths[1]].children = [];
     }
-    let current = params[paths[1]].childrens;
+    let current = params[paths[1]].children;
     for (let i = 2; i < paths.length; i += 1) {
-      if (!current[paths[i]].childrens) {
-        current[paths[i]].childrens = [];
+      if (!current[paths[i]].children) {
+        current[paths[i]].children = [];
       }
-      current = current[paths[i]].childrens;
+      current = current[paths[i]].children;
     }
     return current;
   }
@@ -40,9 +81,9 @@ class Param extends React.Component {
     const { params } = this.state;
     if (parent) {
       const current = this.getCurrentParam(parent);
-      current.push({ type: 'String' });
+      current.push({ type: 'String', required: true });
     } else {
-      params.push({ type: 'String' });
+      params.push({ type: 'String', required: true });
     }
     this.setState({ params });
     this.props.onChange(params);
@@ -50,7 +91,10 @@ class Param extends React.Component {
   handleParamChange = (param, key) => {
     const { params } = this.state;
     this.setState({ params });
-    this.props.onChange(params, param, key);
+
+    if (key === 'type' || key === 'required') {
+      this.props.edit({ [key]: param[key], id: param._id });
+    }
   }
   handleDel = (index) => {
     const paths = index.split('.');
@@ -60,18 +104,28 @@ class Param extends React.Component {
       del = { ...params[paths[1]] };
       params.splice(paths[1], 1);
     } else {
-      let current = params[paths[1]].childrens;
+      let current = params[paths[1]].children;
       for (let i = 2; i < paths.length; i += 1) {
         if (paths.length - 1 === i) {
           del = { ...current[paths[i]] };
           current.splice(paths[i], 1);
         } else {
-          current = current[paths[i]].childrens;
+          current = current[paths[i]].children;
         }
       }
     }
     this.setState({ params });
-    this.props.onDel(del);
+    this.props.del(del);
+  }
+  handleBlur = (param, key) => {
+    if (param._id) {
+      this.props.edit({ [key]: param[key], id: param._id });
+    }
+  }
+  handleSaveClick = () => {
+    const { params } = this.state;
+    const { interfaceId, project, isRequest } = this.props;
+    this.props.add({ params, project, interface: interfaceId, is_request: isRequest });
   }
   renderEditor = (params = [], parent = '') => (
     <div className="editor">
@@ -91,11 +145,12 @@ class Param extends React.Component {
               <Row
                 param={item}
                 onDel={() => this.handleDel(`${parent}.${index}`)}
+                onBlur={(key) => this.handleBlur(item, key)}
                 onChange={(param, key) => this.handleParamChange(param, key, `${parent}.${index}`)}
               />
               {item.type.indexOf('Object') !== -1 &&
                 <div className="nest">
-                  {this.renderEditor(item.childrens, `${parent}.${index}`)}
+                  {this.renderEditor(item.children, `${parent}.${index}`)}
                 </div>
               }
             </div>
@@ -104,6 +159,9 @@ class Param extends React.Component {
       </div>
       <div className="editor-action">
         <button className="btn" onClick={() => this.handleAddClick(parent)}>添加</button>
+        {!parent &&
+          <button className="btn save" onClick={this.handleSaveClick}>保存</button>
+        }
       </div>
     </div>
   );

@@ -7,10 +7,12 @@ class Row extends React.Component {
     param: PropTypes.object.isRequired,
     onChange: PropTypes.func,
     onDel: PropTypes.func,
+    onBlur: PropTypes.func,
   }
   static defaultProps = {
     onChange: () => { },
     onDel: () => { },
+    onBlur: () => { },
   }
   constructor(props) {
     super(props);
@@ -33,6 +35,9 @@ class Row extends React.Component {
   handleDelClick = () => {
     this.props.onDel();
   }
+  handleBlur = (key) => {
+    this.props.onBlur(key);
+  }
   render() {
     const { param } = this.state;
     return (
@@ -42,6 +47,7 @@ class Row extends React.Component {
             type="text"
             placeholder="名称"
             value={param.name || ''}
+            onBlur={() => this.handleBlur('name')}
             onChange={(e) => this.handleChange(e.target.value, 'name')}
           />
         </div>
@@ -56,13 +62,14 @@ class Row extends React.Component {
             type="text"
             placeholder="备注"
             value={param.remark || ''}
+            onBlur={() => this.handleBlur('remark')}
             onChange={(e) => this.handleChange(e.target.value, 'remark')}
           />
         </div>
         <div className="required">
           <input
             type="checkbox"
-            value={param.required}
+            checked={param.required || false}
             onChange={(e) => this.handleChange(e.target.checked, 'required')}
           />
         </div>
@@ -71,6 +78,7 @@ class Row extends React.Component {
             type="text"
             placeholder="默认值"
             value={param.defaultValue || ''}
+            onBlur={() => this.handleBlur('defaultValue')}
             onChange={(e) => this.handleChange(e.target.value, 'defaultValue')}
           />
         </div>
@@ -79,6 +87,7 @@ class Row extends React.Component {
             type="text"
             placeholder="生成规则"
             value={param.rule || ''}
+            onBlur={() => this.handleBlur('rule')}
             onChange={(e) => this.handleChange(e.target.value, 'rule')}
           />
         </div>

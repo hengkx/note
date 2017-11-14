@@ -6,6 +6,8 @@ import tag from './tag';
 import upload from './upload';
 import project from './project';
 import table from './table';
+import interfaces from './interface';
+import param from './param';
 import ApiError from '../errors/ApiError';
 
 const router = new Router({
@@ -19,6 +21,8 @@ router.use(tag.routes());
 router.use(upload.routes());
 router.use(project.routes());
 router.use(table.routes());
+router.use(interfaces.routes());
+router.use(param.routes());
 
 router.all('*', async () => {
   throw new ApiError('NOT_FOUND');

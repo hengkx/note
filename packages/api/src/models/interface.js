@@ -7,6 +7,7 @@ const Interfaces = new Schema({
   name: { type: String, required: true },
   method: { type: String, required: true },
   url: { type: String, required: true },
+  remark: String,
   project: { type: Schema.Types.ObjectId, required: true, ref: 'Project' },
   user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
 });

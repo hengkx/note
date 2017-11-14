@@ -3,6 +3,7 @@ import { Tabs } from 'antd';
 import { Route, Link } from 'react-router-dom';
 import Interface from '../../containers/Interface';
 import InterfaceAdd from '../../containers/InterfaceAdd';
+import InterfaceEdit from '../../containers/InterfaceEdit';
 
 const TabPane = Tabs.TabPane;
 
@@ -22,6 +23,7 @@ class Detail extends React.Component {
           </Tabs>
         }
         <Route exact path={`${match.path}/interface`} component={InterfaceAdd} />
+        <Route exact path={`${match.path}/interface/:interfaceId`} component={InterfaceEdit} />
       </div>
     );
   }

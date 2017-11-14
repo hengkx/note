@@ -44,6 +44,7 @@
     "markdown-it-footnote": "^3.0.1",
     "markdown-it-github-toc": "^3.2.4",
     "markdown-it-task-lists": "^2.0.1",
+    "mockjs": "^1.0.1-beta3",
     "moment": "^2.18.1",
     "nprogress": "^0.2.0",
     "object.omit": "^3.0.0",

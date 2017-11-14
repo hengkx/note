@@ -1,6 +1,6 @@
-import Api from './Api';
+import Interface from './Interface';
 
-export default Api;
+export default Interface;
 
 export { default as Edit } from './Edit';
 
