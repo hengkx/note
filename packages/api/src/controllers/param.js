@@ -5,10 +5,7 @@ export async function getList(ctx) {
   const { id: user } = ctx.session;
   const { interface: api, is_request } = ctx.query;
   const params = await Param.find({ user, is_request, interface: api });
-  ctx.body = {
-    is_request: is_request === 'true',
-    params
-  };
+  ctx.body = params;
 }
 
 export async function getById(ctx) {
@@ -44,8 +41,6 @@ export async function add(ctx) {
   const addon = { user, project, is_request, interface: api };
 
   await addParam(addon, params);
-
-  ctx.body = addon;
 }
 
 export async function edit(ctx) {
@@ -60,13 +55,10 @@ export async function edit(ctx) {
 export async function del(ctx) {
   const { id } = ctx.params;
   const { id: user } = ctx.session;
-  const { body } = ctx.request;
 
   const res = await Param.remove({
     $or: [{ id }, { parents: id }],
     $and: [{ user }]
   });
   if (res.result.n === 0) throw new ApiError('GROUP_NOT_EXISTS');
-
-  ctx.body = body;
 }

@@ -24,7 +24,11 @@ axios.interceptors.response.use(
   (response) => {
     if (isObject(response.data)) {
       if (response.data.code === 401) return history.push('/signin');
-      return { ...response.data, _time: new Date().getTime() };
+      return {
+        ...response.data,
+        requestParams: response.config.params || JSON.parse(response.config.data),
+        _time: new Date().getTime()
+      };
     }
     return response.data;
   }

@@ -39,23 +39,31 @@ class Param extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { getListResult, editResult, delResult, addResult, isRequest } = nextProps;
     if (getListResult !== this.props.getListResult) {
-      if (getListResult.data.is_request === isRequest) {
-        const params = toTree(getListResult.data.params);
+      const { requestParams, data } = getListResult;
+      if (requestParams.is_request === isRequest) {
+        const params = toTree(data);
         this.setState({ params });
         this.props.onChange(params);
       }
     }
     if (editResult !== this.props.editResult) {
-      if (editResult.code === 0 && editResult.data.is_request === isRequest) {
+      const { requestParams, code } = getListResult;
+      if (code === 0 && requestParams.is_request === isRequest) {
         message.success('更新成功');
         this.getParamList();
       }
     }
-    if (delResult !== this.props.delResult && delResult.data.is_request === isRequest) {
-      this.getParamList();
+    if (delResult !== this.props.delResult) {
+      const { requestParams, code } = delResult;
+      if (code === 0 && requestParams.is_request === isRequest) {
+        this.getParamList();
+      }
     }
-    if (addResult !== this.props.addResult && addResult.data.is_request === isRequest) {
-      this.getParamList();
+    if (addResult !== this.props.addResult) {
+      const { requestParams, code } = addResult;
+      if (code === 0 && requestParams.is_request === isRequest) {
+        this.getParamList();
+      }
     }
   }
   getParamList = () => {
