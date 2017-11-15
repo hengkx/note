@@ -12,6 +12,7 @@ import config from './config';
 mongoose();
 
 const app = new Koa();
+app.proxy = true;
 app.use(async (ctx, next) => {
   // 响应开始时间
   const start = new Date();

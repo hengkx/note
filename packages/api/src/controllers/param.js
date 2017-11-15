@@ -1,26 +1,42 @@
 import ApiError from '../errors/ApiError';
 import { Interface, Param } from '../models';
 
+
+export async function getParamList({ user, api, project, is_request }) {
+  if (api) {
+    const inter = await Interface.findOne({ user, _id: api });
+    let paramTypes = {};
+    if (is_request) {
+      paramTypes = inter.req_param_type || {};
+    } else {
+      paramTypes = inter.res_param_type || {};
+    }
+    const params = await Param.find({
+      $and: [{ user, is_request, project }],
+      $or: [{ interface: api }, { interface: undefined }]
+    });
+
+    params.forEach(item => {
+      if (item.type === 'Variable') {
+        if (paramTypes[item.name]) {
+          item.type = paramTypes[item.name];// eslint-disable-line no-param-reassign
+        } else {
+          item.type = 'Object';// eslint-disable-line no-param-reassign
+        }
+      }
+    });
+
+    return params;
+  }
+  const params = await Param.find({ user, is_request, project, interface: undefined });
+  return params;
+}
+
 export async function getList(ctx) {
   const { id: user } = ctx.session;
-  const { interface: api, is_request } = ctx.query;
-  const inter = await Interface.findOne({ user, id: api });
-  let paramTypes = {};
-  if (is_request) {
-    paramTypes = inter.req_param_type;
-  } else {
-    paramTypes = inter.res_param_type;
-  }
-  const params = await Param.find({ $and: [{ user, is_request }], $or: [{ interface: api }, { interface: undefined }] });
-
-  params.forEach(item => {
-    if (item.type === 'Variable' && paramTypes[item.name]) {
-      item.type = paramTypes[item.name];
-    }
-  });
-
-  // const params = await Param.find({ user, is_request, interface: api });
-  ctx.body = params;
+  const { interface: api, project, is_request } = ctx.query;
+  const res = await getParamList({ user, api, project, is_request });
+  ctx.body = res;
 }
 
 export async function getById(ctx) {
@@ -34,7 +50,7 @@ async function addParam(addon, params, parent) {
   await Promise.all(params.map(async (item) => {
     let param;
     if (item._id) {
-      param = await Param.findOne({ ...addon, _id: item._id });
+      param = await Param.findOne({ _id: item._id });
     } else {
       const temp = {};
       if (parent) {

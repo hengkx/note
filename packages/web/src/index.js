@@ -21,6 +21,9 @@ if (process.env.NODE_ENV === 'development') {
 axios.defaults.headers.post['Content-Type'] = 'application/json';
 axios.defaults.withCredentials = true;
 
+window.baseURL = axios.defaults.baseURL;
+
+
 axios.interceptors.response.use(
   (response) => {
     if (isObject(response.data)) {

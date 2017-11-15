@@ -74,8 +74,8 @@ class Param extends React.Component {
     }
   }
   getParamList = () => {
-    const { interfaceId, isRequest } = this.props;
-    this.props.getList({ interface: interfaceId, is_request: isRequest });
+    const { interfaceId, project, isRequest } = this.props;
+    this.props.getList({ project, interface: interfaceId, is_request: isRequest });
   }
   getCurrentParam = (keys) => {
     const paths = keys.split('.');
@@ -130,7 +130,9 @@ class Param extends React.Component {
       }
     }
     this.setState({ params });
-    this.props.del(del);
+    if (del && del._id) {
+      this.props.del(del);
+    }
   }
   handleBlur = (param, key) => {
     if (param._id) {
@@ -160,7 +162,7 @@ class Param extends React.Component {
             {params.map((item, index) => (
               <div key={index}>
                 <Row
-                  readOnly={interfaceId && !item.interface}
+                  readOnly={interfaceId && item._id && !item.interface}
                   param={item}
                   onDel={() => this.handleDel(`${parent}.${index}`)}
                   onBlur={(key) => this.handleBlur(item, key)}

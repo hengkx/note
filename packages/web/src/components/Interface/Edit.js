@@ -92,6 +92,7 @@ class Edit extends React.Component {
             onBlur={() => this.handleBlur('remark')}
             onChange={(e) => this.handleChange(e.target.value, 'remark')}
           />
+          <a href={`${window.baseURL}mock/${project._id}/${api.url}`} target="_blank">伪造数据</a>
         </Card>
         <Card title="请求参数" style={{ marginBottom: 24 }} bordered={false}>
           <Param

@@ -31,3 +31,10 @@ export async function del(ctx) {
   });
   if (res.result.n === 0) throw new ApiError('GROUP_NOT_EXISTS');
 }
+
+export async function mock(ctx) {
+  const { id } = ctx.params;
+  const user = ctx.session.id;
+  const table = await Project.findOne({ user, id });
+  ctx.body = table;
+}

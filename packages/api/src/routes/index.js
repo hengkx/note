@@ -8,6 +8,7 @@ import project from './project';
 import table from './table';
 import interfaces from './interface';
 import param from './param';
+import mock from './mock';
 import ApiError from '../errors/ApiError';
 
 const router = new Router({
@@ -24,8 +25,13 @@ router.use(table.routes());
 router.use(interfaces.routes());
 router.use(param.routes());
 
-router.all('*', async () => {
+const allRouter = new Router();
+
+allRouter.use(router.routes());
+allRouter.use(mock.routes());
+
+allRouter.all('*', async () => {
   throw new ApiError('NOT_FOUND');
 });
 
-export default router;
+export default allRouter;
