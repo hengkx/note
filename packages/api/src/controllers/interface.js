@@ -1,5 +1,5 @@
 import ApiError from '../errors/ApiError';
-import { Interface } from '../models';
+import { Interface, Param } from '../models';
 
 export async function getList(ctx) {
   const { id: user } = ctx.session;
@@ -11,16 +11,29 @@ export async function getList(ctx) {
 export async function getById(ctx) {
   const { id: user } = ctx.session;
   const { id } = ctx.params;
-  const table = await Interface.findOne({ user, id });
-  ctx.body = table;
+  const res = await Interface.findOne({ user, id });
+  ctx.body = res;
 }
 
 export async function add(ctx) {
-  const { id } = ctx.session;
+  const { id: user } = ctx.session;
   const { body } = ctx.request;
-  const group = await Interface.create({ user: id, ...body });
 
-  ctx.body = group;
+  const { project } = body;
+  const interfaces = await Param.find({ user, project, interface: undefined, type: 'Variable' });
+  const req_param_type = {};
+  const res_param_type = {};
+  interfaces.forEach(item => {
+    if (item.is_request) {
+      req_param_type[item.name] = 'Object';
+    } else {
+      res_param_type[item.name] = 'Object';
+    }
+  });
+
+  const res = await Interface.create({ user, req_param_type, res_param_type, ...body });
+
+  ctx.body = res;
 }
 
 export async function edit(ctx) {

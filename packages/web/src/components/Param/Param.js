@@ -1,13 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { message } from 'antd';
+import brace from 'brace';// eslint-disable-line no-unused-vars
+import AceEditor from 'react-ace';
+import 'brace/mode/json';
+import 'brace/theme/tomorrow_night_eighties';
 import Row from './Row';
 import { toTree } from '../../utils';
+import getParamsMockObj from '../../utils/getParamsMockObj';
 import './less/param.less';
 
 class Param extends React.Component {
   static propTypes = {
-    interfaceId: PropTypes.string.isRequired,
+    interfaceId: PropTypes.string,
     project: PropTypes.string.isRequired,
     getList: PropTypes.func.isRequired,
     add: PropTypes.func.isRequired,
@@ -18,11 +23,13 @@ class Param extends React.Component {
     delResult: PropTypes.object,
     addResult: PropTypes.object,
     onChange: PropTypes.func,
-    isRequest: PropTypes.bool
+    isRequest: PropTypes.bool,
+    isShowPreview: PropTypes.bool,
   }
   static defaultProps = {
     onChange: () => { },
-    isRequest: false
+    isRequest: false,
+    isShowPreview: true
   }
 
   constructor(props) {
@@ -100,7 +107,7 @@ class Param extends React.Component {
     const { params } = this.state;
     this.setState({ params });
 
-    if (key === 'type' || key === 'required') {
+    if (param._id && (key === 'type' || key === 'required')) {
       this.props.edit({ [key]: param[key], id: param._id });
     }
   }
@@ -135,51 +142,72 @@ class Param extends React.Component {
     const { interfaceId, project, isRequest } = this.props;
     this.props.add({ params, project, interface: interfaceId, is_request: isRequest });
   }
-  renderEditor = (params = [], parent = '') => (
-    <div className="editor">
-      <div className="editor-core">
-        <div className="editor-hd">
-          <div>名称</div>
-          <div>类型</div>
-          <div>备注</div>
-          <div className="required">必须</div>
-          <div>默认值</div>
-          <div>生成规则</div>
-          <div className="action" />
+  renderEditor = (params = [], parent = '') => {
+    const { interfaceId } = this.props;
+    return (
+      <div className="editor">
+        <div className="editor-core">
+          <div className="editor-hd">
+            <div>名称</div>
+            <div>类型</div>
+            <div>备注</div>
+            <div className="required">必须</div>
+            <div>默认值</div>
+            <div>生成规则</div>
+            <div className="action" />
+          </div>
+          <div className="editor-bd">
+            {params.map((item, index) => (
+              <div key={index}>
+                <Row
+                  readOnly={interfaceId && !item.interface}
+                  param={item}
+                  onDel={() => this.handleDel(`${parent}.${index}`)}
+                  onBlur={(key) => this.handleBlur(item, key)}
+                  onChange={(param, key) => this.handleParamChange(param, key, `${parent}.${index}`)}
+                />
+                {item.type.indexOf('Object') !== -1 &&
+                  <div className="nest">
+                    {this.renderEditor(item.children, `${parent}.${index}`)}
+                  </div>
+                }
+              </div>
+            ))}
+          </div>
         </div>
-        <div className="editor-bd">
-          {params.map((item, index) => (
-            <div key={index}>
-              <Row
-                param={item}
-                onDel={() => this.handleDel(`${parent}.${index}`)}
-                onBlur={(key) => this.handleBlur(item, key)}
-                onChange={(param, key) => this.handleParamChange(param, key, `${parent}.${index}`)}
-              />
-              {item.type.indexOf('Object') !== -1 &&
-                <div className="nest">
-                  {this.renderEditor(item.children, `${parent}.${index}`)}
-                </div>
-              }
-            </div>
-          ))}
+        <div className="editor-action">
+          <button className="btn" onClick={() => this.handleAddClick(parent)}>添加</button>
+          {!parent &&
+            <button className="btn save" onClick={this.handleSaveClick}>保存</button>
+          }
         </div>
       </div>
-      <div className="editor-action">
-        <button className="btn" onClick={() => this.handleAddClick(parent)}>添加</button>
-        {!parent &&
-          <button className="btn save" onClick={this.handleSaveClick}>保存</button>
-        }
-      </div>
-    </div>
-  );
+    );
+  };
 
   render() {
     const { params } = this.state;
+    const { isShowPreview } = this.props;
     return (
       <div style={{ width: '100%' }}>
         <div className="param">
           {this.renderEditor(params)}
+          {isShowPreview &&
+            <div className="preview">
+              <AceEditor
+                mode="json"
+                theme="tomorrow_night_eighties"
+                name="REQUEST_EXAMPLE"
+                fontSize={14}
+                width="100%"
+                showPrintMargin={false}
+                value={JSON.stringify(getParamsMockObj(params), null, 2)}
+                editorProps={{ $blockScrolling: true }}
+                readOnly
+                maxLines={50}
+              />
+            </div>
+          }
         </div>
       </div>
     );

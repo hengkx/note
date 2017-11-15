@@ -1,10 +1,25 @@
 import ApiError from '../errors/ApiError';
-import { Param } from '../models';
+import { Interface, Param } from '../models';
 
 export async function getList(ctx) {
   const { id: user } = ctx.session;
   const { interface: api, is_request } = ctx.query;
-  const params = await Param.find({ user, is_request, interface: api });
+  const inter = await Interface.findOne({ user, id: api });
+  let paramTypes = {};
+  if (is_request) {
+    paramTypes = inter.req_param_type;
+  } else {
+    paramTypes = inter.res_param_type;
+  }
+  const params = await Param.find({ $and: [{ user, is_request }], $or: [{ interface: api }, { interface: undefined }] });
+
+  params.forEach(item => {
+    if (item.type === 'Variable' && paramTypes[item.name]) {
+      item.type = paramTypes[item.name];
+    }
+  });
+
+  // const params = await Param.find({ user, is_request, interface: api });
   ctx.body = params;
 }
 

@@ -7,15 +7,7 @@
     ],
     "plugins": [
         "add-module-exports",
-        [
-            "import",
-            [
-                {
-                    "libraryName": "antd",
-                    "style": true
-                }
-            ]
-        ]
+        ["import",{ "libraryName": "antd", "style": true}]
     ],
     "env": {
         "production": {

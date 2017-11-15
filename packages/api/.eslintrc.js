@@ -9,6 +9,7 @@ module.exports = {
     "mocha": true
   },
   "rules": {
+    "camelcase": "off",
     "no-script-url": "off",
     "linebreak-style": "off",
     "semi": ["off"],

@@ -5,6 +5,7 @@ import { AppContainer } from 'react-hot-loader';
 import axios from 'axios';
 import isObject from 'lodash/isObject';
 import { message } from 'antd';
+import 'ant-design-pro/dist/ant-design-pro.css'; // 统一引入样式
 // import pathToRegexp from 'path-to-regexp';
 import App, { history } from './App';
 

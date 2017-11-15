@@ -2,9 +2,9 @@ import ApiError from '../errors/ApiError';
 import { Project } from '../models';
 
 export async function getList(ctx) {
-  const { id } = ctx.session;
-  const groups = await Project.find({ user: id });
-  ctx.body = groups;
+  const { id: user } = ctx.session;
+  const projects = await Project.find({ user }).sort('-created_at').populate('user', ['name']);
+  ctx.body = projects;
 }
 
 export async function getById(ctx) {
@@ -15,12 +15,11 @@ export async function getById(ctx) {
 }
 
 export async function add(ctx) {
-  const { id } = ctx.session;
+  const { id: user } = ctx.session;
   const { body } = ctx.request;
-  const { name } = body;
-  const group = await Project.create({ user: id, name });
+  const project = await Project.create({ user, ...body });
 
-  ctx.body = group;
+  ctx.body = project;
 }
 
 export async function del(ctx) {

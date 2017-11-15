@@ -14,7 +14,7 @@ const Params = new Schema({
   parent: { type: Schema.Types.ObjectId, ref: 'Param' },
   parents: [{ type: Schema.Types.ObjectId, ref: 'Param' }],
   project: { type: Schema.Types.ObjectId, required: true, ref: 'Project' },
-  interface: { type: Schema.Types.ObjectId, required: true, ref: 'Interface' },
+  interface: { type: Schema.Types.ObjectId, ref: 'Interface' },
   user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
 });
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
+import { Switch, Route } from 'react-router';
 import { ConnectedRouter } from 'react-router-redux';
 import { Provider } from 'react-redux';
 import createHistory from 'history/createBrowserHistory';
@@ -22,13 +22,13 @@ export default class extends Component {
     return (
       <Provider store={store}>
         <ConnectedRouter history={history}>
-          <div>
-            <Route path="/home" component={withRouter(Main)} />
+          <Switch>
             <Route exact path="/signin" component={withRouter(SignIn)} />
             <Route exact path="/signup" component={withRouter(SignUp)} />
             <Route exact path="/forgot" component={withRouter(Forgot)} />
             <Route exact path="/share" component={withRouter(Share)} />
-          </div>
+            <Route path="/" component={withRouter(Main)} />
+          </Switch>
         </ConnectedRouter>
       </Provider>
     );

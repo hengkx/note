@@ -16,7 +16,8 @@ const options = [
   },
   { label: 'String', value: 'String' },
   { label: 'Boolean', value: 'Boolean' },
-  { label: 'Number', value: 'Number' }
+  { label: 'Number', value: 'Number' },
+  { label: 'Variable', value: 'Variable' },
 ];
 
 function getItem(value) {
@@ -39,11 +40,13 @@ function getItem(value) {
 class Select extends React.Component {
   static propTypes = {
     onChange: PropTypes.func,
-    value: PropTypes.string
+    value: PropTypes.string,
+    readOnly: PropTypes.bool
   }
   static defaultProps = {
     onChange: () => { },
-    value: ''
+    value: '',
+    readOnly: false
   }
 
   constructor(props) {
@@ -73,9 +76,9 @@ class Select extends React.Component {
   handleClick = () => {
     this.setState({ isShowSelect: true });
   }
-  handleBlur = () => {
-    this.setState({ isShowSelect: false });
-  }
+  // handleBlur = () => {
+  //   this.setState({ isShowSelect: false });
+  // }
   getClass = (item) => {
     const { selected } = this.state;
     if (!selected) return '';
@@ -85,10 +88,10 @@ class Select extends React.Component {
   }
   render() {
     const { selected, isShowSelect } = this.state;
-
+    const { readOnly } = this.props;
     return (
       <div className="select" onBlur={this.handleBlur} tabIndex={0}>
-        <div className="select-hd" onClick={this.handleClick}>
+        <div className="select-hd" onClick={!readOnly && this.handleClick}>
           {selected ? selected.label : ''}
         </div>
         {isShowSelect &&

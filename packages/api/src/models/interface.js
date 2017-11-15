@@ -8,6 +8,8 @@ const Interfaces = new Schema({
   method: { type: String, required: true },
   url: { type: String, required: true },
   remark: String,
+  req_param_type: {},
+  res_param_type: {},
   project: { type: Schema.Types.ObjectId, required: true, ref: 'Project' },
   user: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
 });

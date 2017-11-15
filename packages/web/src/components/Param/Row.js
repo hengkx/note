@@ -8,11 +8,13 @@ class Row extends React.Component {
     onChange: PropTypes.func,
     onDel: PropTypes.func,
     onBlur: PropTypes.func,
+    readOnly: PropTypes.bool
   }
   static defaultProps = {
     onChange: () => { },
     onDel: () => { },
     onBlur: () => { },
+    readOnly: false
   }
   constructor(props) {
     super(props);
@@ -36,15 +38,18 @@ class Row extends React.Component {
     this.props.onDel();
   }
   handleBlur = (key) => {
-    this.props.onBlur(key);
+    const { readOnly } = this.props;
+    if (!readOnly) this.props.onBlur(key);
   }
   render() {
     const { param } = this.state;
+    const { readOnly } = this.props;
     return (
       <div className="editor-row">
         <div>
           <input
             type="text"
+            readOnly={readOnly}
             placeholder="名称"
             value={param.name || ''}
             onBlur={() => this.handleBlur('name')}
@@ -53,6 +58,7 @@ class Row extends React.Component {
         </div>
         <div>
           <Select
+            readOnly={readOnly}
             value={param.type || ''}
             onChange={(val) => this.handleChange(val, 'type')}
           />
@@ -61,6 +67,7 @@ class Row extends React.Component {
           <input
             type="text"
             placeholder="备注"
+            readOnly={readOnly}
             value={param.remark || ''}
             onBlur={() => this.handleBlur('remark')}
             onChange={(e) => this.handleChange(e.target.value, 'remark')}
@@ -69,6 +76,7 @@ class Row extends React.Component {
         <div className="required">
           <input
             type="checkbox"
+            disabled={readOnly}
             checked={param.required || false}
             onChange={(e) => this.handleChange(e.target.checked, 'required')}
           />
@@ -77,6 +85,7 @@ class Row extends React.Component {
           <input
             type="text"
             placeholder="默认值"
+            readOnly={readOnly}
             value={param.defaultValue || ''}
             onBlur={() => this.handleBlur('defaultValue')}
             onChange={(e) => this.handleChange(e.target.value, 'defaultValue')}
@@ -86,14 +95,17 @@ class Row extends React.Component {
           <input
             type="text"
             placeholder="生成规则"
+            readOnly={readOnly}
             value={param.rule || ''}
             onBlur={() => this.handleBlur('rule')}
             onChange={(e) => this.handleChange(e.target.value, 'rule')}
           />
         </div>
-        <div className="action">
-          <button className="btn" onClick={this.handleDelClick}>X</button>
-        </div>
+        {!readOnly &&
+          <div className="action">
+            <button className="btn" onClick={this.handleDelClick}>X</button>
+          </div>
+        }
       </div>
     );
   }

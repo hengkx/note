@@ -7,10 +7,11 @@ const reduxReqs = new ReduxReqs({
 
 reduxReqs
   .get('GET_LIST')
+  .get('GET_BY_ID', '/:id')
   .del('DEL', '/:id')
   .post('ADD');
 
-export const { del, add, getList }
+export const { del, add, getList, getById }
   = reduxReqs.getCreateActions();
 
 export default reduxReqs.getReducers();

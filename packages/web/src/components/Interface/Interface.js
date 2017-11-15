@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { Button, Input, Form, Table } from 'antd';
+import { Button, Input, Card, Table } from 'antd';
 import { Route, Link } from 'react-router-dom';
 
 class Interface extends React.Component {
@@ -58,9 +58,9 @@ class Interface extends React.Component {
       },
     ];
     return (
-      <div>
+      <Card bordered={false}>
         <Table rowKey="_id" dataSource={interfaces} columns={columns} />
-      </div>
+      </Card>
     );
   }
 }
