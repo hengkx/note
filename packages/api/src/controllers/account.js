@@ -11,7 +11,7 @@ export async function sendActiveEmail(ctx) {
   const { email } = ctx.request.body;
   if (!validator.isEmail(email)) throw new ApiError('EMAIL_INVALID');
   const count = await User.count({ email });
-  if (count === 0) throw new ApiError('USER_NOT_EXISTS');
+  if (count === 0) throw new ApiError('USER_NOT_FOUND');
 
   const token = randomize('a0', 32);
   await UserActive.create({ email, token });
@@ -25,6 +25,13 @@ export async function sendActiveEmail(ctx) {
   if (res.response !== '250 Data Ok: queued as freedom') {
     throw new ApiError('SEND_EMAIL_ERROR');
   }
+}
+
+
+export async function getInfo(ctx) {
+  const { id: user } = ctx.session;
+  const res = await User.findById(user);
+  ctx.body = res;
 }
 
 export async function signup(ctx) {
@@ -64,7 +71,9 @@ export async function active(ctx) {
   await UserActive.findOneAndUpdate({ email, token, is_used: false }, { is_used: true });
   await User.findOneAndUpdate({ email }, {
     is_actived: true
-  }, { new: true });
+  });
+
+  ctx.redirect(config.ui);
 }
 
 export async function signin(ctx) {
@@ -91,7 +100,7 @@ export async function forgot(ctx) {
   const { email } = ctx.request.body;
   if (!validator.isEmail(email)) throw new ApiError('EMAIL_INVALID');
   const count = await User.count({ email });
-  if (count === 0) throw new ApiError('USER_NOT_EXISTS');
+  if (count === 0) throw new ApiError('USER_NOT_FOUND');
   const password = randomize('Aa0', 12);
   await User.findOneAndUpdate({ email }, { password: md5(password) });
 

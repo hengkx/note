@@ -5,7 +5,7 @@ import { Provider } from 'react-redux';
 import createHistory from 'history/createBrowserHistory';
 import { withRouter } from 'react-router-dom';
 import configureStore from './store/configureStore';
-import Main from './components/Main';
+import Main from './containers/Main';
 import Share from './containers/Share';
 import SignIn from './containers/SignIn';
 import SignUp from './containers/SignUp';

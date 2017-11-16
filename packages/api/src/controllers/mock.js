@@ -9,14 +9,13 @@ export async function mock(ctx) {
   // console.log(method, body);
   // console.log(ctx.query);
   const { id, 1: url } = ctx.params;
-  const { id: user } = ctx.session;
   // const project = await Project.findOne({ user, id });
   const api = await Interface.findOne({
-    $and: [{ user, method, project: id }],
+    $and: [{ method, project: id }],
     $or: [{ url }, { url: `/${url}` }],
   });
   if (!api) throw new ApiError('INTERFACE_NOT_FOUND');
-  const res = await getParamList({ user, is_request: false, api: api._id, project: id });
+  const res = await getParamList({ user: api.user, is_request: false, api: api._id, project: id });
   const params = toTree(res);
   ctx.body = getParamsMockObj(params);
 }

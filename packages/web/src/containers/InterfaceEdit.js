@@ -7,6 +7,7 @@ const mapStateToProps = (state) => ({
   editResult: state.interfaces.editResult,
   getParamListResult: state.param.getListResult,
   project: state.project.getByIdResult ? state.project.getByIdResult.data : {},
+  user: state.account.getInfoResult.data,
 });
 
 export default connect(

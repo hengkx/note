@@ -9,9 +9,10 @@ reduxReqs
   .get('GET_LIST')
   .get('GET_BY_ID', '/:id')
   .del('DEL', '/:id')
-  .post('ADD');
+  .post('ADD')
+  .post('ADD_MEMBER', '/:_id/member');
 
-export const { del, add, getList, getById }
+export const { del, add, getList, getById, addMember }
   = reduxReqs.getCreateActions();
 
 export default reduxReqs.getReducers();

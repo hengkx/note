@@ -14,6 +14,8 @@ const SubMenu = Menu.SubMenu;
 class Main extends React.Component {
   static propTypes = {
     location: PropTypes.object,
+    getInfo: PropTypes.func.isRequired,
+    getInfoResult: PropTypes.object,
   }
   static childContextTypes = {
     location: PropTypes.object,
@@ -22,7 +24,8 @@ class Main extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      program: 'note'
+      // program: 'note',
+      user: {}
     };
   }
   getChildContext() {
@@ -36,10 +39,19 @@ class Main extends React.Component {
     };
     return { location, breadcrumbNameMap };
   }
-  componentWillMount() {
-    const { program } = urlParse(window.location.href, true).query;
-    if (program) {
-      this.setState({ program });
+  // componentWillMount() {
+  //   const { program } = urlParse(window.location.href, true).query;
+  //   if (program) {
+  //     this.setState({ program });
+  //   }
+  // }
+  componentDidMount() {
+    this.props.getInfo();
+  }
+  componentWillReceiveProps(nextProps) {
+    const { getInfoResult } = nextProps;
+    if (getInfoResult !== this.props.getInfoResult) {
+      this.setState({ user: getInfoResult.data });
     }
   }
 
@@ -63,6 +75,7 @@ class Main extends React.Component {
     );
     const currentUser = {};
     const noticeData = {};
+    const { user } = this.state;
     return (
       <Layout>
         <Sider
@@ -128,20 +141,22 @@ class Main extends React.Component {
                   emptyImage="https://gw.alipayobjects.com/zos/rmsportal/HsIsxMZiWKrNUavQUXqx.svg"
                 />
               </NoticeIcon>
-              {currentUser.name ? (
+              {user.name ? (
                 <Dropdown overlay={menu}>
-                  <span className="action account">
-                    <Avatar size="small" className="avatar" src={currentUser.avatar} />
-                    {currentUser.name}
+                  <span className="action header-account">
+                    <Avatar size="small" className="avatar" src={user.avatar} />
+                    {user.name}
                   </span>
                 </Dropdown>
               ) : <Spin size="small" style={{ marginLeft: 8 }} />}
             </div>
           </Header>
-          <Content style={{ margin: '24px', height: '100%' }}>
-            <Route path="/note" component={NoteMain} />
-            <Route path="/project" component={Project} />
-          </Content>
+          {user.name &&
+            <Content style={{ margin: '24px', height: '100%' }}>
+              <Route path="/note" component={NoteMain} />
+              <Route path="/project" component={Project} />
+            </Content>
+          }
         </Layout>
       </Layout>
     );

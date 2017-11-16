@@ -41,7 +41,8 @@ class Select extends React.Component {
   static propTypes = {
     onChange: PropTypes.func,
     value: PropTypes.string,
-    readOnly: PropTypes.bool
+    readOnly: PropTypes.bool,
+    style: PropTypes.object
   }
   static defaultProps = {
     onChange: () => { },
@@ -76,9 +77,9 @@ class Select extends React.Component {
   handleClick = () => {
     this.setState({ isShowSelect: true });
   }
-  // handleBlur = () => {
-  //   this.setState({ isShowSelect: false });
-  // }
+  handleBlur = () => {
+    this.setState({ isShowSelect: false });
+  }
   getClass = (item) => {
     const { selected } = this.state;
     if (!selected) return '';
@@ -88,9 +89,9 @@ class Select extends React.Component {
   }
   render() {
     const { selected, isShowSelect } = this.state;
-    const { readOnly } = this.props;
+    const { readOnly, style } = this.props;
     return (
-      <div className="select" onBlur={this.handleBlur} tabIndex={0}>
+      <div className="select" style={style} onBlur={this.handleBlur} tabIndex={0}>
         <div className="select-hd" onClick={!readOnly && this.handleClick}>
           {selected ? selected.label : ''}
         </div>

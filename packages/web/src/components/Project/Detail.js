@@ -6,7 +6,7 @@ import Interface from '../../containers/Interface';
 import InterfaceAdd from '../../containers/InterfaceAdd';
 import InterfaceEdit from '../../containers/InterfaceEdit';
 import PageHeaderLayout from '../PageHeaderLayout';
-import Param from '../../containers/Param';
+import ProjectSetting from '../../containers/ProjectSetting';
 
 // const TabPane = Tabs.TabPane;
 
@@ -20,7 +20,7 @@ class Detail extends React.Component {
     super(props);
     this.state = {
       project: {},
-      tab: 'interface'
+      tab: 'interface',
     };
   }
 
@@ -71,19 +71,7 @@ class Detail extends React.Component {
             <Interface />
           }
           {tab === 'setting' &&
-            <div>
-              <Card title="请求参数" style={{ marginBottom: 24 }} bordered={false}>
-                <Param
-                  isRequest
-                  project={project._id}
-                />
-              </Card>
-              <Card title="响应参数" style={{ marginBottom: 24 }} bordered={false}>
-                <Param
-                  project={project._id}
-                />
-              </Card>
-            </div>
+            <ProjectSetting project={project} />
           }
         </PageHeaderLayout>
       );

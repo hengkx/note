@@ -8,13 +8,14 @@ const reduxReqs = new ReduxReqs({
 
 reduxReqs
   .get('GET_LIST')
+  .get('GET_INFO', '/info')
   .post('SEND_ACTIVE_EMAIL', '/active')
   .post('SIGN_IN', '/signin')
   .post('FORGOT', '/forgot')
   .post('SIGN_UP', '/signup')
   .post('ADD');
 
-export const { sendActiveEmail, signIn, signUp, forgot, add, getList }
+export const { sendActiveEmail, signIn, signUp, forgot, getInfo, add, getList }
   = reduxReqs.getCreateActions();
 
 export default reduxReqs.getReducers();

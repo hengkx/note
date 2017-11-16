@@ -1,18 +1,25 @@
 import ApiError from '../errors/ApiError';
-import { Interface, Param } from '../models';
+import { Interface, Param, Project } from '../models';
 
 
 export async function getParamList({ user, api, project, is_request }) {
+
+  const pro = await Project.findOne({
+    $and: [{ _id: project }],
+    $or: [{ user }, { members: user }]
+  });
+  if (!pro) throw new ApiError('PROJECT_NOT_FOUNT');
+
   if (api) {
-    const inter = await Interface.findOne({ user, _id: api });
+    const inter = await Interface.findOne({ _id: api });
     let paramTypes = {};
-    if (is_request) {
+    if (is_request && is_request === 'true') {
       paramTypes = inter.req_param_type || {};
     } else {
       paramTypes = inter.res_param_type || {};
     }
     const params = await Param.find({
-      $and: [{ user, is_request, project }],
+      $and: [{ is_request, project }],
       $or: [{ interface: api }, { interface: undefined }]
     });
 
@@ -28,7 +35,7 @@ export async function getParamList({ user, api, project, is_request }) {
 
     return params;
   }
-  const params = await Param.find({ user, is_request, project, interface: undefined });
+  const params = await Param.find({ is_request, project, interface: undefined });
   return params;
 }
 
@@ -79,7 +86,6 @@ export async function edit(ctx) {
   const { id: user } = ctx.session;
   const { body } = ctx.request;
   const res = await Param.findOneAndUpdate({ id, user }, body, { new: true });
-
   ctx.body = res;
 }
 

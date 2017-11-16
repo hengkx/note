@@ -8,7 +8,7 @@ const authorize = () => (async (ctx, next) => {
     '/api/account/forgot',
     '/api/note/share'// post need auth
   ];
-  if (ctx.session.id || unAuthorizes.indexOf(ctx.request.path) !== -1) {
+  if (ctx.session.id || unAuthorizes.indexOf(ctx.request.path) !== -1 || ctx.request.path.indexOf('/mock') !== -1) {
     await next();
   } else {
     throw new ApiError('UN_AUTHORIZE');
