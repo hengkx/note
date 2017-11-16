@@ -1,5 +1,7 @@
 import Mock from 'mockjs';
 
+const Random = Mock.Random;// eslint-disable-line no-unused-vars
+
 function getParamsMockObj(params) {
   const paramsObj = {};
   params.forEach(item => {
