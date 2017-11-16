@@ -14,7 +14,7 @@ export async function getById(ctx) {
   const table = await Project.findOne({
     $and: [{ id }],
     $or: [{ user }, { members: user }]
-  });
+  }).populate('members', ['name', 'email', 'avatar']);
   ctx.body = table;
 }
 
@@ -39,6 +39,15 @@ export async function addMember(ctx) {
   });
 }
 
+export async function removeMember(ctx) {
+  const { id: user } = ctx.session;
+  const { id, user: member } = ctx.params;
+
+  await Project.update({ user, id }, {
+    $pop: { members: member }
+  });
+}
+
 export async function del(ctx) {
   const { id } = ctx.params;
 
@@ -49,9 +58,3 @@ export async function del(ctx) {
   if (res.result.n === 0) throw new ApiError('GROUP_NOT_EXISTS');
 }
 
-export async function mock(ctx) {
-  const { id } = ctx.params;
-  const user = ctx.session.id;
-  const table = await Project.findOne({ user, id });
-  ctx.body = table;
-}
