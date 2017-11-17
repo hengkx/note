@@ -100,7 +100,7 @@ class SignUp extends React.Component {
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 14 },
+        sm: { span: 18 },
       },
     };
     const tailFormItemLayout = {
@@ -110,14 +110,14 @@ class SignUp extends React.Component {
           offset: 0,
         },
         sm: {
-          span: 14,
+          span: 18,
           offset: 6,
         },
       },
     };
     return (
       <Form className="account" onSubmit={this.handleSubmit}>
-        <h1>云笔记</h1>
+        <h1>Work</h1>
         <FormItem
           {...formItemLayout}
           label="邮箱"

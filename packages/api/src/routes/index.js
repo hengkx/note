@@ -9,6 +9,7 @@ import table from './table';
 import interfaces from './interface';
 import param from './param';
 import mock from './mock';
+import log from './log';
 import ApiError from '../errors/ApiError';
 
 const router = new Router({
@@ -24,6 +25,7 @@ router.use(project.routes());
 router.use(table.routes());
 router.use(interfaces.routes());
 router.use(param.routes());
+router.use(log.routes());
 
 const allRouter = new Router();
 

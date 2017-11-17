@@ -1,5 +1,5 @@
 import ApiError from '../errors/ApiError';
-import { Interface, Param, Project } from '../models';
+import { Interface, Param, Project, ProjectLog } from '../models';
 
 export async function getList(ctx) {
   const { id: user } = ctx.session;
@@ -64,6 +64,17 @@ export async function add(ctx) {
 
   const res = await Interface.create({ user, req_param_type, res_param_type, ...body });
 
+  await ProjectLog.create({
+    user,
+    project,
+    ip: ctx.ip,
+    action: 'create_interface',
+    interface: res.interface,
+    data: {
+      current: res.name,
+    }
+  });
+
   ctx.body = res;
 }
 
@@ -74,15 +85,37 @@ export async function edit(ctx) {
   const res = await Interface.findOneAndUpdate({ id, user }, body, { new: true });
   if (!res) throw new ApiError('INTERFACE_NOT_FOUND');
 
+  await Promise.all(Object.keys(body).map(async (key) => {
+    const log = await ProjectLog.create({
+      user,
+      action: `update_interface_${key}`,
+      ip: ctx.ip,
+      project: res.project,
+      interface: res.interface,
+      data: {
+        current: body[key],
+      }
+    });
+    return log;
+  }));
+
   ctx.body = res;
 }
 
 export async function del(ctx) {
   const { id } = ctx.params;
+  const { id: user } = ctx.session;
 
-  const res = await Interface.remove({
-    $or: [{ id }, { parents: id }],
-    $and: [{ user: ctx.session.id }]
+  const api = await Interface.findById(id);
+  if (!api) throw new ApiError('INTERFACE_NOT_FOUND');
+
+  await Interface.remove({ id, user });
+
+  await ProjectLog.create({
+    user,
+    action: 'remove_interface',
+    ip: ctx.ip,
+    project: api.project,
+    interface: id,
   });
-  if (res.result.n === 0) throw new ApiError('GROUP_NOT_EXISTS');
 }

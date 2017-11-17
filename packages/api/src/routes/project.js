@@ -1,5 +1,5 @@
 import Router from 'koa-router';
-import { getList, add, addMember, removeMember, del, getById } from '../controllers/project';
+import { getList, getLog, add, addMember, removeMember, del, getById } from '../controllers/project';
 
 const router = new Router({
   prefix: '/project'
@@ -7,6 +7,7 @@ const router = new Router({
 
 router
   .get('/', getList)
+  .get('/log', getLog)
   .get('/:id', getById)
   .post('/', add)
   .post('/:id/member', addMember)

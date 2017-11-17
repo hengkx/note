@@ -1,7 +1,7 @@
 import validator from 'validator';
 import randomize from 'randomatic';
 import ApiError from '../errors/ApiError';
-import { User, UserActive } from '../models';
+import { User, UserActive, Log } from '../models';
 import { decrypt } from '../utils/rsa';
 import md5 from '../utils/md5';
 import sendEmail from '../utils/email';
@@ -51,13 +51,20 @@ export async function signup(ctx) {
 
   const count = await User.count({ email });
   if (count > 0) throw new ApiError('EMAIL_EXISTS');
-  await User.create({
+  const user = await User.create({
     email,
     password: md5(decryptPass),
     name: email.substring(0, email.indexOf('@')),
     avatar: 'test',
     reg_ip: ctx.ip
   });
+
+  await Log.create({
+    action: 'signup',
+    user: user._id,
+    ip: ctx.ip
+  });
+
 
   await sendActiveEmail(ctx);
 }

@@ -11,6 +11,7 @@ const Params = new Schema({
   remark: String,
   rule: String,
   is_request: { type: Boolean, required: true, default: false }, // 是不是请求参数
+  sort: { type: Number, default: 99, required: true },
   parent: { type: Schema.Types.ObjectId, ref: 'Param' },
   parents: [{ type: Schema.Types.ObjectId, ref: 'Param' }],
   project: { type: Schema.Types.ObjectId, required: true, ref: 'Project' },

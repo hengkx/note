@@ -67,7 +67,7 @@ class SignIn extends React.Component {
     const { isShowActive } = this.state;
     return (
       <Form className="account" onSubmit={this.handleSubmit}>
-        <h1>云笔记</h1>
+        <h1>Work</h1>
         <FormItem
           hasFeedback
         >
