@@ -135,5 +135,8 @@ export async function del(ctx) {
     project: param.project,
     interface: param.interface,
     param: id,
+    data: {
+      current: param.name
+    }
   });
 }

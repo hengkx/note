@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Form, Modal, Card, Avatar, message } from 'antd';
+import { Button, Input, Form, Modal, Card, Avatar, message, List } from 'antd';
 import { Route, Link } from 'react-router-dom';
 import moment from 'moment';
 import TableList from '../../containers/Table';
@@ -22,17 +22,22 @@ class Project extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      projects: []
+      projects: [],
+      logs: []
     };
   }
 
   componentDidMount() {
     this.props.getList();
+    this.props.getLogList();
   }
   componentWillReceiveProps(nextProps) {
-    const { getListResult, addResult } = nextProps;
+    const { getListResult, addResult, getLogListResult } = nextProps;
     if (getListResult !== this.props.getListResult) {
       this.setState({ projects: getListResult.data });
+    }
+    if (getLogListResult !== this.props.getLogListResult) {
+      this.setState({ logs: getLogListResult.data });
     }
     if (addResult !== this.props.addResult) {
       if (addResult.code === 0) {
@@ -55,7 +60,58 @@ class Project extends React.Component {
   handkeAddClick = () => {
     this.setState({ visible: true });
   }
-
+  renderActivities() {
+    const { logs } = this.state;
+    return logs.map((item) => {
+      // const events = item.template.split(/@\{([^{}]*)\}/gi).map((key) => {
+      //   if (item[key]) {
+      //     return <a href={item[key].link} key={item[key].name}>{item[key].name}</a>;
+      //   }
+      //   return key;
+      // });
+      const events = ['在 '];
+      events.push(<a href={`/project/${item.project._id}`} key={item.project._id}>{item.project.name}</a>);
+      events.push(' 项目 ');
+      if (item.action === 'add_project_member') {
+        events.push('添加项目成员');
+      } else if (item.action === 'create_interface') {
+        events.push(' 添加接口 ');
+        events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
+      } else if (item.action === 'create_param') {
+        events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
+        events.push(' 接口 添加参数 ');
+        events.push(item.data.current);
+      } else if (item.action === 'remove_param') {
+        events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
+        events.push(' 接口 移除参数 ');
+        events.push(item.data.current);
+      } else if (item.action === 'update_param_remark') {
+        events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
+        events.push(' 接口 更新参数 ');
+        events.push(item.param.name);
+        events.push(item.data.current);
+      }
+      return (
+        <List.Item key={item.id}>
+          <List.Item.Meta
+            avatar={<Avatar src={item.user.avatar} />}
+            title={
+              <span>
+                <a className="username">{item.user.name}</a>
+                &nbsp;
+                <span className="event">{events}</span>
+              </span>
+            }
+            description={
+              <span className="datetime" title={item.updatedAt}>
+                {moment.unix(item.updated_at).fromNow()}
+              </span>
+            }
+          />
+        </List.Item>
+      );
+    });
+  }
   render() {
     const { getFieldDecorator } = this.props.form;
     const { projects } = this.state;
@@ -125,6 +181,18 @@ class Project extends React.Component {
                 </Card>
               </Card.Grid>
             ))}
+          </Card>
+          <Card
+            bodyStyle={{ padding: 0 }}
+            bordered={false}
+            className="activeCard"
+            title="动态"
+          >
+            <List size="large">
+              <div className="activitiesList">
+                {this.renderActivities()}
+              </div>
+            </List>
           </Card>
         </PageHeaderLayout>
       );

@@ -69,7 +69,7 @@ export async function add(ctx) {
     project,
     ip: ctx.ip,
     action: 'create_interface',
-    interface: res.interface,
+    interface: res._id,
     data: {
       current: res.name,
     }
