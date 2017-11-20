@@ -61,6 +61,13 @@ class Interface extends React.Component {
     console.log(groups);
     return (
       <Card bordered={false}>
+        <ul>
+          <li>所有接口</li>
+          <li>未分组</li>
+          {groups.map(item => (
+            <li key={item._id}>{item.name}</li>
+          ))}
+        </ul>
         <Table rowKey="_id" dataSource={interfaces} columns={columns} />
       </Card>
     );
