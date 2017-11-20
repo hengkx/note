@@ -25,3 +25,5 @@ export { default as Interface } from './interface';
 
 export { default as Param } from './param';
 
+export { default as ProjectGroup } from './projectGroup';
+

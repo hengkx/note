@@ -57,6 +57,8 @@ class Interface extends React.Component {
           (moment.unix(text).format('YYYY-MM-DD HH:mm:ss'))
       },
     ];
+    const { groups } = this.props;
+    console.log(groups);
     return (
       <Card bordered={false}>
         <Table rowKey="_id" dataSource={interfaces} columns={columns} />

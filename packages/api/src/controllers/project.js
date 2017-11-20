@@ -1,10 +1,30 @@
 import ApiError from '../errors/ApiError';
-import { Project, User, ProjectLog } from '../models';
+import { Project, User, ProjectLog, ProjectGroup } from '../models';
+
+
+export async function param(id, ctx, next) {
+  const { id: user } = ctx.session;
+
+  const project = await Project.findOne({
+    $and: [{ id }],
+    $or: [{ user }, { members: user }]
+  }).populate('members', ['name', 'email', 'avatar']);
+  if (!project) throw new ApiError('PROJECT_NOT_FOUND');
+  ctx.project = project;
+  return next();
+}
+
 
 export async function getList(ctx) {
   const { id: user } = ctx.session;
   const projects = await Project.find({ $or: [{ user }, { members: user }] })
     .sort('-created_at').populate('user', ['name']);
+  ctx.body = projects;
+}
+
+export async function getGroup(ctx) {
+  const { id } = ctx.params;
+  const projects = await ProjectGroup.find({ project: id });
   ctx.body = projects;
 }
 
@@ -25,13 +45,7 @@ export async function getLog(ctx) {
 }
 
 export async function getById(ctx) {
-  const { id } = ctx.params;
-  const user = ctx.session.id;
-  const table = await Project.findOne({
-    $and: [{ id }],
-    $or: [{ user }, { members: user }]
-  }).populate('members', ['name', 'email', 'avatar']);
-  ctx.body = table;
+  ctx.body = ctx.project;
 }
 
 export async function add(ctx) {
@@ -48,7 +62,6 @@ export async function add(ctx) {
       current: project.name,
     }
   });
-
 
   ctx.body = project;
 }
@@ -95,12 +108,23 @@ export async function removeMember(ctx) {
   });
 }
 
+export async function addGroup(ctx) {
+  const { id: user } = ctx.session;
+  const { id } = ctx.params;
+  const { body } = ctx.request;
+  const res = await ProjectGroup.create({
+    user,
+    ...body,
+    project: id,
+  });
+  ctx.body = res;
+}
+
 export async function del(ctx) {
   const { id } = ctx.params;
   const { id: user } = ctx.session;
 
-  const res = await Project.remove({ id, user });
-  if (res.result.n === 0) throw new ApiError('PROJECT_NOT_FOUND');
+  await Project.remove({ id, user });
 
   await ProjectLog.create({
     user,

@@ -28,7 +28,7 @@
     "kcors": "^2.2.1",
     "koa": "^2.3.0",
     "koa-bodyparser": "^4.2.0",
-    "koa-router": "^7.2.1",
+    "koa-router": "^7.3.0",
     "koa-session": "^5.5.0",
     "koa-static": "^4.0.1",
     "mockjs": "^1.0.1-beta3",

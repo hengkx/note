@@ -12,6 +12,6 @@ export default {
   EMAIL_EXISTS: { code: 2006, message: '邮箱已存在' },
   ACTIVE_INFO_INVALID: { code: 2007, message: '激活信息无效' },
   SEND_EMAIL_ERROR: { code: 2008, message: '发送邮件失败' },
-  PROJECT_NOT_FOUNT: { code: 2008, message: '项目不存在' },
+  PROJECT_NOT_FOUND: { code: 2008, message: '项目不存在' },
   INTERFACE_NOT_FOUND: { code: 2008, message: '接口不存在' },
 };

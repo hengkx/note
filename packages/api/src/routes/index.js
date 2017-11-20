@@ -17,11 +17,11 @@ const router = new Router({
 });
 
 router.use(account.routes());
+router.use(project.routes());
 router.use(group.routes());
 router.use(note.routes());
 router.use(tag.routes());
 router.use(upload.routes());
-router.use(project.routes());
 router.use(table.routes());
 router.use(interfaces.routes());
 router.use(param.routes());

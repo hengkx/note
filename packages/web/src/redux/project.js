@@ -9,12 +9,14 @@ reduxReqs
   .get('GET_LIST')
   .get('GET_LOG_LIST', '/log')
   .get('GET_BY_ID', '/:id')
+  .get('GET_GROUP', '/:id/group')
   .del('DEL', '/:id')
   .del('REMOVE_MEMBER', '/:_id/member/:user')
   .post('ADD')
-  .post('ADD_MEMBER', '/:_id/member');
+  .post('ADD_MEMBER', '/:_id/member')
+  .post('ADD_GROUP', '/:_id/group');
 
-export const { del, add, getList, getById, addMember, removeMember, getLogList }
+export const { del, add, addGroup, getGroup, getList, getById, addMember, removeMember, getLogList }
   = reduxReqs.getCreateActions();
 
 export default reduxReqs.getReducers();

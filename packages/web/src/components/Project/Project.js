@@ -57,7 +57,7 @@ class Project extends React.Component {
       }
     });
   }
-  handkeAddClick = () => {
+  handleAddClick = () => {
     this.setState({ visible: true });
   }
   renderActivities() {
@@ -119,7 +119,7 @@ class Project extends React.Component {
     if (match.isExact) {
       const action = (
         <div>
-          <Button type="primary" onClick={this.handkeAddClick}>新建项目</Button>
+          <Button type="primary" onClick={this.handleAddClick}>新建项目</Button>
         </div>
       );
       return (

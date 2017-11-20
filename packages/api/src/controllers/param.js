@@ -1,7 +1,6 @@
 import ApiError from '../errors/ApiError';
 import { Interface, Param, Project, ProjectLog } from '../models';
 
-
 export async function getParamList({ user, api, project, is_request }) {
   const pro = await Project.findOne({
     $and: [{ _id: project }],
