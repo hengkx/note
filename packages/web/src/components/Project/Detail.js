@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, Modal, Button, Form, Input } from 'antd';
+import { message, Modal, Button, Form, Input } from 'antd';
 import { Route } from 'react-router-dom';
 import TagSelect from 'ant-design-pro/lib/TagSelect';
 import Interface from '../../containers/Interface';
@@ -40,12 +40,18 @@ class Detail extends React.Component {
     this.props.getGroup({ id });
   }
   componentWillReceiveProps(nextProps) {
-    const { getByIdResult, getGroupResult } = nextProps;
+    const { getByIdResult, getGroupResult, addGroupResult } = nextProps;
     if (getByIdResult !== this.props.getByIdResult) {
       this.setState({ project: getByIdResult.data });
     }
     if (getGroupResult !== this.props.getGroupResult) {
       this.setState({ groups: getGroupResult.data });
+    }
+    if (addGroupResult !== this.props.addGroupResult) {
+      if (addGroupResult.code === 0) {
+        message.success('添加分组成功');
+        this.setState({ visible: false });
+      }
     }
   }
   handleTabChange = (key) => {

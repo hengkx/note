@@ -51,6 +51,7 @@
     "object.omit": "^3.0.0",
     "path-to-regexp": "^2.0.0",
     "prop-types": "^15.5.10",
+    "query-string": "^5.0.1",
     "randomatic": "^1.1.7",
     "react": "^15.6.1",
     "react-ace": "^5.2.1",

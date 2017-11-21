@@ -60,57 +60,57 @@ class Project extends React.Component {
   handleAddClick = () => {
     this.setState({ visible: true });
   }
-  renderActivities() {
-    const { logs } = this.state;
-    return logs.map((item) => {
-      // const events = item.template.split(/@\{([^{}]*)\}/gi).map((key) => {
-      //   if (item[key]) {
-      //     return <a href={item[key].link} key={item[key].name}>{item[key].name}</a>;
-      //   }
-      //   return key;
-      // });
-      const events = ['在 '];
-      events.push(<a href={`/project/${item.project._id}`} key={item.project._id}>{item.project.name}</a>);
-      events.push(' 项目 ');
-      if (item.action === 'add_project_member') {
-        events.push('添加项目成员');
-      } else if (item.action === 'create_interface') {
-        events.push(' 添加接口 ');
-        events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
-      } else if (item.action === 'create_param') {
-        events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
-        events.push(' 接口 添加参数 ');
-        events.push(item.data.current);
-      } else if (item.action === 'remove_param') {
-        events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
-        events.push(' 接口 移除参数 ');
-        events.push(item.data.current);
-      } else if (item.action === 'update_param_remark') {
-        events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
-        events.push(' 接口 更新参数 ');
-        events.push(item.param.name);
-        events.push(item.data.current);
-      }
-      return (
-        <List.Item key={item.id}>
-          <List.Item.Meta
-            avatar={<Avatar src={item.user.avatar} />}
-            title={
-              <span>
-                <a className="username">{item.user.name}</a>
-                &nbsp;
-                <span className="event">{events}</span>
-              </span>
-            }
-            description={
-              <span className="datetime" title={item.updatedAt}>
-                {moment.unix(item.updated_at).fromNow()}
-              </span>
-            }
-          />
-        </List.Item>
-      );
-    });
+  renderActivities = () => {
+    // const { logs } = this.state;
+    // return logs.map((item) => {
+    //   // const events = item.template.split(/@\{([^{}]*)\}/gi).map((key) => {
+    //   //   if (item[key]) {
+    //   //     return <a href={item[key].link} key={item[key].name}>{item[key].name}</a>;
+    //   //   }
+    //   //   return key;
+    //   // });
+    //   const events = ['在 '];
+    //   events.push(<a href={`/project/${item.project._id}`} key={item.project._id}>{item.project.name}</a>);
+    //   events.push(' 项目 ');
+    //   if (item.action === 'add_project_member') {
+    //     events.push('添加项目成员');
+    //   } else if (item.action === 'create_interface') {
+    //     events.push(' 添加接口 ');
+    //     events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
+    //   } else if (item.action === 'create_param') {
+    //     events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
+    //     events.push(' 接口 添加参数 ');
+    //     events.push(item.data.current);
+    //   } else if (item.action === 'remove_param') {
+    //     events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
+    //     events.push(' 接口 移除参数 ');
+    //     events.push(item.data.current);
+    //   } else if (item.action === 'update_param_remark') {
+    //     events.push(<a href={`/project/${item.project._id}/interface/${item.interface._id}`} key={item.interface._id}>{item.interface.name}</a>);
+    //     events.push(' 接口 更新参数 ');
+    //     events.push(item.param.name);
+    //     events.push(item.data.current);
+    //   }
+    //   return (
+    //     <List.Item key={item.id}>
+    //       <List.Item.Meta
+    //         avatar={<Avatar src={item.user.avatar} />}
+    //         title={
+    //           <span>
+    //             <a className="username">{item.user.name}</a>
+    //             &nbsp;
+    //             <span className="event">{events}</span>
+    //           </span>
+    //         }
+    //         description={
+    //           <span className="datetime" title={item.updatedAt}>
+    //             {moment.unix(item.updated_at).fromNow()}
+    //           </span>
+    //         }
+    //       />
+    //     </List.Item>
+    //   );
+    // });
   }
   render() {
     const { getFieldDecorator } = this.props.form;

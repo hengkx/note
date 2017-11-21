@@ -15,6 +15,7 @@ class Add extends React.Component {
     add: PropTypes.func.isRequired,
     addResult: PropTypes.object,
     project: PropTypes.object,
+    groups: PropTypes.array,
   }
 
   componentWillReceiveProps(nextProps) {
@@ -37,7 +38,7 @@ class Add extends React.Component {
   }
   render() {
     const { getFieldDecorator } = this.props.form;
-
+    const { groups } = this.props;
     const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
@@ -91,6 +92,20 @@ class Add extends React.Component {
               {getFieldDecorator('url', {
                 rules: [{ required: true, message: '请输入相对路径，支持路径参数，例如：/api/get/:id' }],
               })(<Input addonBefore={prefixSelector} placeholder="请输入相对路径，支持路径参数，例如：/api/get/:id" />)}
+            </FormItem>
+            <FormItem
+              {...formItemLayout}
+              label="分组"
+            >
+              {getFieldDecorator('group', {
+                initialValue: ''
+              })(
+                <Select
+                  placeholder="选择分组"
+                >
+                  <Option value="" >未分组</Option>
+                  {groups.map(item => <Option key={item._id} value={item._id}>{item.name}</Option>)}
+                </Select>)}
             </FormItem>
             <FormItem
               {...formItemLayout}

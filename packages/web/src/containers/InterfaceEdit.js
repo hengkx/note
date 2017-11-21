@@ -8,6 +8,7 @@ const mapStateToProps = (state) => ({
   getParamListResult: state.param.getListResult,
   project: state.project.getByIdResult ? state.project.getByIdResult.data : {},
   user: state.account.getInfoResult.data,
+  groups: state.project.getGroupResult ? state.project.getGroupResult.data : [],
 });
 
 export default connect(

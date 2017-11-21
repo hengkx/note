@@ -17,6 +17,7 @@ class Edit extends React.Component {
     editResult: PropTypes.object,
     project: PropTypes.object,
     user: PropTypes.object,
+    groups: PropTypes.array,
   }
   constructor(props) {
     super(props);
@@ -48,9 +49,14 @@ class Edit extends React.Component {
   }
   handleChange = (val, key) => {
     const { api } = this.state;
-    api[key] = val;
+    if (key === 'group') {
+      if (!api.group) api.group = {};
+      api.group._id = val;
+    } else {
+      api[key] = val;
+    }
     this.setState({ api });
-    if (key === 'method') {
+    if (key === 'method' || key === 'group') {
       const { interfaceId } = this.props.match.params;
       this.props.edit({ id: interfaceId, [key]: val });
     }
@@ -68,7 +74,7 @@ class Edit extends React.Component {
     this.props.edit({ id: interfaceId, res_param_type: api.res_param_type });
   }
   render() {
-    const { project, user } = this.props;
+    const { project, user, groups } = this.props;
     const { interfaceId, id } = this.props.match.params;
     const { api } = this.state;
     const prefixSelector = (
@@ -109,6 +115,16 @@ class Edit extends React.Component {
             onBlur={() => this.handleBlur('remark')}
             onChange={(e) => this.handleChange(e.target.value, 'remark')}
           />
+
+          <Select
+            placeholder="选择分组"
+            value={api.group ? api.group._id : ''}
+            onChange={(val) => this.handleChange(val, 'group')}
+          >
+            <Option value="" >未分组</Option>
+            {groups.map(item => <Option key={item._id} value={item._id}>{item.name}</Option>)}
+          </Select>
+
           <a href={`${window.baseURL}mock/${project._id}/${api.url}`} target="_blank">伪造数据</a>
           {api.req_param_type &&
             <Card title="请求动态参数" style={{ marginBottom: 24 }}>

@@ -14,6 +14,7 @@ import App, { history } from './App';
 if (process.env.NODE_ENV === 'development') {
   // axios.defaults.baseURL = 'http://10.0.1.195:3000/';
   axios.defaults.baseURL = 'http://localhost:3000/';
+  // axios.defaults.baseURL = 'https://api.note.hengkx.com/';
 } else {
   axios.defaults.baseURL = 'https://api.note.hengkx.com/';
   // axios.defaults.baseURL = 'http://api.note.hengkx.com/';
